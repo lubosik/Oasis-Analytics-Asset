@@ -4,7 +4,6 @@ import { TOTAL_SCENES } from "@/story/scenes";
 export function useStoryNavigation() {
   const [currentSceneIndex, setCurrentSceneIndex] = useState(0);
   const [presenterMode, setPresenterMode] = useState(false);
-  const [proofMode, setProofMode] = useState(false);
   const sceneRefs = useRef<(HTMLElement | null)[]>([]);
 
   // Scroll to a specific scene - ensure it's fully in frame accounting for headers
@@ -51,7 +50,7 @@ export function useStoryNavigation() {
   useEffect(() => {
     if (presenterMode) return; // Only use observer in Link mode
 
-    let timeoutId: NodeJS.Timeout | null = null;
+    let timeoutId: ReturnType<typeof setTimeout> | null = null;
 
     const observer = new IntersectionObserver(
       (entries) => {
