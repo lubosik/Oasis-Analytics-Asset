@@ -27,17 +27,18 @@ export function SceneReveal({
               y: 0,
             }
           : {
-              opacity: 0,
-              y: 20,
+              opacity: 0.3, // Keep visible but dimmed instead of completely hidden
+              y: 0, // Don't move when inactive to prevent layout shifts
             }
       }
       transition={{
-        duration: 0.6,
+        duration: 0.4,
         ease: [0.22, 1, 0.36, 1], // Custom easing for premium feel
       }}
       style={{
         // Prevent layout shifts
         willChange: isActive ? "opacity, transform" : "auto",
+        pointerEvents: isActive ? "auto" : "none", // Prevent interaction with inactive scenes
       }}
     >
       {children}

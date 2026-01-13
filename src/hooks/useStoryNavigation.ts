@@ -51,29 +51,58 @@ export function useStoryNavigation() {
   useEffect(() => {
     if (presenterMode) return; // Only use observer in Link mode
 
+    let timeoutId: NodeJS.Timeout | null = null;
+
     const observer = new IntersectionObserver(
       (entries) => {
         // Find the scene that's most visible in the viewport
         let maxIntersection = 0;
         let mostVisibleIndex = currentSceneIndex;
+        let currentSceneRatio = 0;
 
         entries.forEach((entry) => {
-          if (entry.isIntersecting && entry.intersectionRatio > maxIntersection) {
-            maxIntersection = entry.intersectionRatio;
-            const index = sceneRefs.current.indexOf(entry.target as HTMLElement);
+          const intersectionRatio = entry.intersectionRatio;
+          const index = sceneRefs.current.indexOf(entry.target as HTMLElement);
+          
+          // Track current scene's visibility
+          if (index === currentSceneIndex) {
+            currentSceneRatio = intersectionRatio;
+          }
+          
+          // Require at least 50% visibility to consider switching
+          if (entry.isIntersecting && intersectionRatio > 0.5 && intersectionRatio > maxIntersection) {
+            maxIntersection = intersectionRatio;
             if (index !== -1) {
               mostVisibleIndex = index;
             }
           }
         });
 
-        if (mostVisibleIndex !== currentSceneIndex) {
-          setCurrentSceneIndex(mostVisibleIndex);
+        // Only switch if:
+        // 1. We found a different scene
+        // 2. The new scene has at least 50% visibility
+        // 3. The new scene is significantly more visible than the current one (at least 20% more)
+        //    OR the current scene has less than 30% visibility (user has scrolled away)
+        const shouldSwitch = 
+          mostVisibleIndex !== currentSceneIndex && 
+          maxIntersection > 0.5 &&
+          (maxIntersection > currentSceneRatio + 0.2 || currentSceneRatio < 0.3);
+
+        if (shouldSwitch) {
+          // Clear any pending timeout
+          if (timeoutId) {
+            clearTimeout(timeoutId);
+          }
+          
+          // Debounce the scene change to prevent flashing
+          timeoutId = setTimeout(() => {
+            setCurrentSceneIndex(mostVisibleIndex);
+          }, 200); // 200ms delay to stabilize during scroll
         }
       },
       {
-        threshold: [0, 0.25, 0.5, 0.75, 1],
-        rootMargin: "-20% 0px -20% 0px", // Consider scene "active" when it's in the middle 60% of viewport
+        threshold: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1], // More granular thresholds
+        rootMargin: "-10% 0px -10% 0px", // Less aggressive margin - consider scene active when in middle 80% of viewport
       }
     );
 
@@ -82,6 +111,9 @@ export function useStoryNavigation() {
     });
 
     return () => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
       sceneRefs.current.forEach((ref) => {
         if (ref) observer.unobserve(ref);
       });
