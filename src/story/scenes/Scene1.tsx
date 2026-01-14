@@ -9,7 +9,7 @@ export function Scene1() {
       {/* Headline */}
       <div className="text-center mb-6 sm:mb-8 md:mb-12 lg:mb-16 px-2">
         <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-gray-900 mb-3 sm:mb-4 leading-tight">
-          Archived leads → real conversations → real buyers.
+          Leads → real conversations → real buyers.
         </h1>
       </div>
 
@@ -87,7 +87,7 @@ export function Scene1() {
       {/* Support line and credibility */}
       <div className="text-center mt-6 sm:mt-8 md:mt-12 space-y-1 sm:space-y-2 px-2">
         <p className="text-base sm:text-lg md:text-xl text-gray-700">
-          All from re-engaging leads that were 12+ months old.
+          Works on fresh inbound and older leads. This case study highlights reactivation.
         </p>
         <p className="text-xs sm:text-sm md:text-base text-gray-500">
           {METRICS_META.dataSpan} of data.

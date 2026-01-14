@@ -14,16 +14,16 @@ export function Scene2() {
       {/* Headline */}
       <div className="text-center mb-6 sm:mb-8 md:mb-12 px-2">
         <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-gray-900 mb-4 sm:mb-6 leading-tight">
-          These weren't fresh inbound leads.
+          This was a mixed lead pipeline.
         </h1>
         
         {/* Badges */}
         <div className="flex items-center justify-center gap-2 sm:gap-3 flex-wrap px-2">
           <Badge variant="secondary" className="text-xs sm:text-sm md:text-base px-3 sm:px-4 py-1.5 sm:py-2">
-            Archived (12+ months)
+            Fresh inbound + older leads
           </Badge>
           <Badge variant="secondary" className="text-xs sm:text-sm md:text-base px-3 sm:px-4 py-1.5 sm:py-2">
-            Re-engagement campaign
+            Follow-up + reactivation
           </Badge>
         </div>
       </div>
@@ -44,7 +44,7 @@ export function Scene2() {
             </PopoverTrigger>
             <PopoverContent className="w-80 p-4">
               <p className="text-sm text-gray-700">
-                Lower pickup is normal here; what matters is what happens when they do answer.
+                Pickup rates vary by lead source. Older leads generally pick up less, so the impact is what happens after an answer.
               </p>
             </PopoverContent>
           </Popover>
@@ -94,7 +94,7 @@ export function Scene2() {
         {/* Summary text with industry comparison */}
         <div className="mt-4 sm:mt-6 text-center space-y-1 sm:space-y-2 px-2">
           <p className="text-xs sm:text-sm md:text-base text-gray-600">
-            {LEADS_PICKED_UP.percent} pickup rate from archived leads
+            {LEADS_PICKED_UP.percent} pickup rate
           </p>
           <p className="text-[10px] sm:text-xs md:text-sm text-gray-500">
             Industry average: {INDUSTRY_STANDARDS.averagePickupRate} • {LEADS_PICKED_UP.percent} is 3-7x better

@@ -41,10 +41,10 @@ export function Scene10() {
         className="max-w-3xl mx-auto text-center space-y-3 sm:space-y-4 px-2"
       >
         <p className="text-base sm:text-lg md:text-xl text-gray-600">
-          All from archived leads that were 12+ months old.
-        </p>
-        <p className="text-sm sm:text-base md:text-lg text-gray-500">
           Ready for your sales team to close.
+        </p>
+        <p className="text-xs sm:text-sm md:text-base text-gray-500">
+          Works for fresh inbound and older leads.
         </p>
       </motion.div>
     </div>
