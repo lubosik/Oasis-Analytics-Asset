@@ -12,7 +12,6 @@ function App() {
     setPresenterMode,
     scrollToScene,
     registerSceneRef,
-    wasNavigatedByKeyboard,
   } = useStoryNavigation();
 
   // Detect view mode from URL

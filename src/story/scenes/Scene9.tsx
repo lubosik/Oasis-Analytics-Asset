@@ -1,8 +1,6 @@
 import { AnimatedCounter } from "@/components/AnimatedCounter";
 import { Card } from "@/components/ui/card";
 import { IllustrativeCalculator } from "@/components/IllustrativeCalculator";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Info } from "lucide-react";
 import {
   BANT_VERIFIED,
   QUALIFIED_BUYERS,
@@ -17,7 +15,16 @@ import { CheckCircle2, Clock, Phone, Zap } from "lucide-react";
 export function Scene9() {
   const { proofMode } = useStoryContext();
 
-  const queueItems = [
+  const queueItems: Array<{
+    icon: typeof CheckCircle2;
+    title: string;
+    count: number;
+    display: string;
+    label: string;
+    color: string;
+    bgColor: string;
+    borderColor: string;
+  }> = [
     {
       icon: CheckCircle2,
       title: "BANT Verified",
