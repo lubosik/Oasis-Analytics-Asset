@@ -5,16 +5,19 @@ interface SceneRevealProps {
   children: ReactNode;
   isActive: boolean;
   className?: string;
+  presenterMode?: boolean;
 }
 
 /**
  * SceneReveal wrapper that fades/slides content in when the scene becomes active.
- * Keeps animations subtle and premium; no gimmicks.
+ * Only blanks out scenes when in presenter mode (keyboard navigation).
+ * When scrolling normally, scenes stay visible but dimmed.
  */
 export function SceneReveal({
   children,
   isActive,
   className = "",
+  presenterMode = false,
 }: SceneRevealProps) {
   return (
     <motion.div
@@ -27,7 +30,9 @@ export function SceneReveal({
               y: 0,
             }
           : {
-              opacity: 0, // Blank out previous scenes when navigating
+              // Only blank out (opacity 0) when in presenter mode (keyboard navigation)
+              // When scrolling normally, dim scenes (opacity 0.3) so they don't suddenly disappear
+              opacity: presenterMode ? 0 : 0.3,
               y: 0, // Don't move when inactive to prevent layout shifts
             }
       }

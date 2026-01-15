@@ -6,10 +6,11 @@ interface SceneLayoutProps {
   className?: string;
   sceneIndex: number;
   currentSceneIndex: number;
+  presenterMode?: boolean;
 }
 
 export const SceneLayout = forwardRef<HTMLElement, SceneLayoutProps>(
-  ({ children, className = "", sceneIndex, currentSceneIndex }, ref) => {
+  ({ children, className = "", sceneIndex, currentSceneIndex, presenterMode = false }, ref) => {
     const isActive = sceneIndex === currentSceneIndex;
 
     return (
@@ -19,7 +20,7 @@ export const SceneLayout = forwardRef<HTMLElement, SceneLayoutProps>(
       >
         <div className="flex-1 flex items-center justify-center px-2 sm:px-4 py-8 sm:py-12 md:py-16">
           <div className="w-full max-w-7xl mx-auto">
-            <SceneReveal isActive={isActive}>{children}</SceneReveal>
+            <SceneReveal isActive={isActive} presenterMode={presenterMode}>{children}</SceneReveal>
           </div>
         </div>
       </section>

@@ -1,35 +1,26 @@
-import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { AnimatedCounter } from "@/components/AnimatedCounter";
 import { CalloutStrip } from "@/components/CalloutStrip";
 import { INTERESTED_CALLBACK_BREAKDOWN, INTERESTED_FROM_CALLBACKS } from "@/data/metrics";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronDown, ChevronUp } from "lucide-react";
 
 export function Scene6() {
-  const [showAll, setShowAll] = useState(false);
 
-  // Compute buyer tiers aggregate from constants (without showing individual tiers)
+  // Compute buyers identified: Tier buyers + Researcher + Browser (all are buyers/interested)
   const buyersIdentifiedTotal =
     INTERESTED_CALLBACK_BREAKDOWN.tier1Buyer.number +
     INTERESTED_CALLBACK_BREAKDOWN.tier2Buyer.number +
-    INTERESTED_CALLBACK_BREAKDOWN.tier3Buyer.number;
+    INTERESTED_CALLBACK_BREAKDOWN.tier3Buyer.number +
+    INTERESTED_CALLBACK_BREAKDOWN.researcher.number +
+    INTERESTED_CALLBACK_BREAKDOWN.browser.number;
 
   const buyersIdentifiedDisplay = buyersIdentifiedTotal.toLocaleString();
 
   // Other outcome categories (non-proprietary)
   const otherOutcomes = [
     { label: "Requested Callback Again", count: INTERESTED_CALLBACK_BREAKDOWN.requestedCallbackAgain, key: "requestedCallbackAgain" },
-    { label: "Researcher", count: INTERESTED_CALLBACK_BREAKDOWN.researcher, key: "researcher" },
-    { label: "Browser", count: INTERESTED_CALLBACK_BREAKDOWN.browser, key: "browser" },
   ];
-
-  // Default view shows top 2 other outcomes
-  const defaultOtherOutcomes = otherOutcomes.slice(0, 2);
-  const hiddenOtherOutcomes = otherOutcomes.slice(2);
-  const displayedOtherOutcomes = showAll ? otherOutcomes : defaultOtherOutcomes;
 
   return (
     <div className="w-full">
@@ -48,7 +39,7 @@ export function Scene6() {
         <Card className="p-6 sm:p-8 md:p-10 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 border-2 border-gray-700">
           <div className="text-center mb-4 sm:mb-6">
             <h2 className="text-lg sm:text-xl md:text-2xl text-gray-300 mb-3 sm:mb-4">
-              Buyers identified (client-defined tiers)
+              Buyers identified
             </h2>
             <div className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold text-white mb-4 sm:mb-6">
               <AnimatedCounter
@@ -58,7 +49,7 @@ export function Scene6() {
               />
             </div>
             <p className="text-xs sm:text-sm md:text-base text-gray-400">
-              Buyer tiers were defined by the client; breakdown withheld.
+              Includes buyers, researchers, and browsers from callbacks.
             </p>
           </div>
         </Card>
@@ -77,7 +68,7 @@ export function Scene6() {
           </h3>
           <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 md:gap-4">
             <AnimatePresence mode="popLayout">
-              {displayedOtherOutcomes.map((outcome, index) => (
+              {otherOutcomes.map((outcome, index) => (
                 <motion.div
                   key={outcome.key}
                   initial={{ opacity: 0, scale: 0.9 }}
@@ -98,29 +89,6 @@ export function Scene6() {
               ))}
             </AnimatePresence>
           </div>
-
-          {/* Show all toggle */}
-          {hiddenOtherOutcomes.length > 0 && (
-            <div className="text-center mt-4">
-              <Button
-                variant="ghost"
-                onClick={() => setShowAll(!showAll)}
-                className="text-xs sm:text-sm text-gray-600 hover:text-gray-900 h-8 sm:h-10"
-              >
-                {showAll ? (
-                  <>
-                    Show less
-                    <ChevronUp className="ml-1 sm:ml-2 h-3 w-3 sm:h-4 sm:w-4" />
-                  </>
-                ) : (
-                  <>
-                    Show all
-                    <ChevronDown className="ml-1 sm:ml-2 h-3 w-3 sm:h-4 sm:w-4" />
-                  </>
-                )}
-              </Button>
-            </div>
-          )}
         </div>
       </div>
     </div>

@@ -13,7 +13,6 @@ import {
   INTERESTED_FROM_CALLBACKS,
   NOT_CONVERTED_CALLBACKS,
   INTERESTED_CALLBACK_BREAKDOWN,
-  NOT_CONVERTED_CALLBACK_BREAKDOWN,
   INDUSTRY_STANDARDS,
 } from "@/data/metrics";
 import { useStoryContext } from "@/contexts/StoryContext";
@@ -23,11 +22,13 @@ import { Phone } from "lucide-react";
 export function Scene5() {
   const { proofMode } = useStoryContext();
 
-  // Compute buyer tiers aggregate (without showing individual tiers)
+  // Compute buyers identified: Tier buyers + Researcher + Browser (all are buyers/interested)
   const buyersIdentifiedTotal =
     INTERESTED_CALLBACK_BREAKDOWN.tier1Buyer.number +
     INTERESTED_CALLBACK_BREAKDOWN.tier2Buyer.number +
-    INTERESTED_CALLBACK_BREAKDOWN.tier3Buyer.number;
+    INTERESTED_CALLBACK_BREAKDOWN.tier3Buyer.number +
+    INTERESTED_CALLBACK_BREAKDOWN.researcher.number +
+    INTERESTED_CALLBACK_BREAKDOWN.browser.number;
   const buyersIdentifiedDisplay = buyersIdentifiedTotal.toLocaleString();
 
   return (
@@ -102,7 +103,7 @@ export function Scene5() {
                 Buyers identified (client-defined tiers)
               </div>
               <div className="text-xs sm:text-sm text-gray-400">
-                Buyer tiers were defined by the client; breakdown withheld.
+                Includes buyers, researchers, and browsers from callbacks.
               </div>
             </div>
           </Card>
@@ -181,94 +182,39 @@ export function Scene5() {
               View detailed breakdown
             </AccordionTrigger>
             <AccordionContent className="pt-3 sm:pt-4 pb-4 sm:pb-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 overflow-x-auto">
-                  {/* Interested Callback Breakdown */}
-                  <div className="min-w-0">
-                    <h3 className="text-sm sm:text-base font-semibold text-gray-900 mb-2 sm:mb-3">
-                      Interested Callback Breakdown
-                    </h3>
-                    <div className="border rounded-lg overflow-x-auto">
-                      <Table>
-                        <TableHeader>
-                          <TableRow>
-                            <TableHead className="w-1/2">Category</TableHead>
-                            <TableHead className="text-right">Count</TableHead>
-                          </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                          <TableRow>
-                            <TableCell>Buyers identified (client-defined tiers)</TableCell>
-                            <TableCell className="text-right font-medium">
-                              {buyersIdentifiedDisplay}
-                            </TableCell>
-                          </TableRow>
-                          <TableRow>
-                            <TableCell>Researcher</TableCell>
-                            <TableCell className="text-right font-medium">
-                              {INTERESTED_CALLBACK_BREAKDOWN.researcher.display}
-                            </TableCell>
-                          </TableRow>
-                          <TableRow>
-                            <TableCell>Browser</TableCell>
-                            <TableCell className="text-right font-medium">
-                              {INTERESTED_CALLBACK_BREAKDOWN.browser.display}
-                            </TableCell>
-                          </TableRow>
-                          <TableRow>
-                            <TableCell>Requested Callback Again</TableCell>
-                            <TableCell className="text-right font-medium">
-                              {INTERESTED_CALLBACK_BREAKDOWN.requestedCallbackAgain.display}
-                            </TableCell>
-                          </TableRow>
-                        </TableBody>
-                      </Table>
-                    </div>
-                  </div>
-
-                  {/* Not Converted Callback Breakdown */}
-                  <div className="min-w-0">
-                    <h3 className="text-sm sm:text-base font-semibold text-gray-900 mb-2 sm:mb-3">
-                      Not Converted Callback Breakdown
-                    </h3>
-                    <div className="border rounded-lg overflow-x-auto">
-                      <Table>
-                        <TableHeader>
-                          <TableRow>
-                            <TableHead className="w-1/2">Category</TableHead>
-                            <TableHead className="text-right">Count</TableHead>
-                          </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                          <TableRow>
-                            <TableCell>Time Waster</TableCell>
-                            <TableCell className="text-right font-medium">
-                              {NOT_CONVERTED_CALLBACK_BREAKDOWN.timeWaster.display}
-                            </TableCell>
-                          </TableRow>
-                          <TableRow>
-                            <TableCell>Voicemail</TableCell>
-                            <TableCell className="text-right font-medium">
-                              {NOT_CONVERTED_CALLBACK_BREAKDOWN.voicemail.display}
-                            </TableCell>
-                          </TableRow>
-                          <TableRow>
-                            <TableCell>Not Interested</TableCell>
-                            <TableCell className="text-right font-medium">
-                              {NOT_CONVERTED_CALLBACK_BREAKDOWN.notInterested.display}
-                            </TableCell>
-                          </TableRow>
-                          <TableRow>
-                            <TableCell>Inconclusive</TableCell>
-                            <TableCell className="text-right font-medium">
-                              {NOT_CONVERTED_CALLBACK_BREAKDOWN.inconclusive.display}
-                            </TableCell>
-                          </TableRow>
-                        </TableBody>
-                      </Table>
-                    </div>
+              <div className="overflow-x-auto">
+                {/* Interested Callback Breakdown */}
+                <div className="min-w-0">
+                  <h3 className="text-sm sm:text-base font-semibold text-gray-900 mb-2 sm:mb-3">
+                    Interested Callback Breakdown
+                  </h3>
+                  <div className="border rounded-lg overflow-x-auto">
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead className="w-1/2">Category</TableHead>
+                          <TableHead className="text-right">Count</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        <TableRow>
+                          <TableCell>Buyers identified</TableCell>
+                          <TableCell className="text-right font-medium">
+                            {buyersIdentifiedDisplay}
+                          </TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell>Requested Callback Again</TableCell>
+                          <TableCell className="text-right font-medium">
+                            {INTERESTED_CALLBACK_BREAKDOWN.requestedCallbackAgain.display}
+                          </TableCell>
+                        </TableRow>
+                      </TableBody>
+                    </Table>
                   </div>
                 </div>
-              </AccordionContent>
+              </div>
+            </AccordionContent>
             </AccordionItem>
           </Accordion>
         </motion.div>

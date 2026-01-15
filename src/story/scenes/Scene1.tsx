@@ -103,11 +103,11 @@ export function Scene1() {
       {viewMode === "private" && (
         <div className="mt-8 sm:mt-12 max-w-4xl mx-auto px-2">
           <Accordion type="single" collapsible className="w-full">
-            <AccordionItem value="about-oasis" className="border-2 border-gray-200 rounded-lg px-2 sm:px-3 md:px-4">
-              <AccordionTrigger className="text-sm sm:text-base md:text-lg font-semibold text-gray-900 hover:no-underline py-3 sm:py-4">
+            <AccordionItem value="about-oasis" className="border-2 border-gray-200 rounded-lg">
+              <AccordionTrigger className="text-sm sm:text-base md:text-lg font-semibold text-gray-900 hover:no-underline py-3 sm:py-4 px-4 sm:px-6">
                 About Oasis (Client)
               </AccordionTrigger>
-              <AccordionContent className="pt-3 sm:pt-4 pb-4 sm:pb-6">
+              <AccordionContent className="pt-3 sm:pt-4 pb-4 sm:pb-6 px-4 sm:px-6">
                 <AboutOasis />
               </AccordionContent>
             </AccordionItem>
