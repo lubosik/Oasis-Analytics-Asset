@@ -57,8 +57,6 @@ function App() {
                 ref={(el: HTMLElement | null) => registerSceneRef(index, el)}
                 sceneIndex={index}
                 currentSceneIndex={currentSceneIndex}
-                presenterMode={presenterMode}
-                wasNavigatedByKeyboard={wasNavigatedByKeyboard}
               >
                 <SceneComponent />
               </SceneLayout>
