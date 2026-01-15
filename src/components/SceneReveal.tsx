@@ -75,7 +75,13 @@ export function SceneReveal({
     
     if (presenterMode) {
       // In presenter mode (arrow keys), blank out inactive scenes
-      return 0;
+      // But only if they're not adjacent (to prevent flickering during scroll animation)
+      const distance = Math.abs(sceneIndex - currentSceneIndex);
+      if (distance > 1) {
+        return 0; // Far from current scene - blank out
+      }
+      // Adjacent scenes: dim them instead of blanking to prevent flicker during scroll
+      return 0.3;
     }
     
     // Normal scrolling: dim inactive scenes, but blank out if completely scrolled past
