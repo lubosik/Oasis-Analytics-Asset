@@ -54,27 +54,12 @@ export function Scene3() {
           className="relative"
         >
           <div className="bg-gray-400 rounded-lg p-4 sm:p-5 md:p-6 lg:p-8 text-center border-2 border-gray-500 relative">
-            <div className="flex items-center justify-center gap-1.5 sm:gap-2 mb-1 sm:mb-2">
-              <div className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white break-words">
-                <AnimatedCounter
-                  targetNumber={INTERESTED_LEADS.number}
-                  displayString={INTERESTED_LEADS.display}
-                  duration={1.2}
-                />
-              </div>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <button
-                    className="text-gray-200 hover:text-white transition-colors flex-shrink-0"
-                    aria-label="Definition of Interested"
-                  >
-                    <Info className="h-4 w-4 sm:h-5 sm:w-5" />
-                  </button>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p className="text-sm">Interested = engaged in conversation</p>
-                </TooltipContent>
-              </Tooltip>
+            <div className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-1 sm:mb-2 break-words">
+              <AnimatedCounter
+                targetNumber={INTERESTED_LEADS.number}
+                displayString={INTERESTED_LEADS.display}
+                duration={1.2}
+              />
             </div>
             <div className="text-sm sm:text-base md:text-lg lg:text-xl text-white">
               Interested ({INTERESTED_LEADS.percent})
