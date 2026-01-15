@@ -1,4 +1,4 @@
-import { type ReactNode, useEffect, useState, useRef } from "react";
+import { type ReactNode, useEffect, useState, useRef, useMemo } from "react";
 import { motion } from "framer-motion";
 
 interface SceneRevealProps {
@@ -92,21 +92,29 @@ export function SceneReveal({
 
   // Calculate opacity - ABSOLUTE SIMPLICITY: active = 1, inactive = 0 (arrow keys) or 0.3 (scroll)
   // CRITICAL: isActive check MUST be first and return 1 immediately
-  // Also: if scene just became active, give it a grace period during scroll animation
-  let opacity: number;
-  if (isActive) {
-    // Active scene: ALWAYS clear, no exceptions, no conditions, even during scroll
-    opacity = 1;
-  } else if (wasNavigatedByKeyboard && presenterMode && !isActive) {
-    // Inactive scene + arrow key navigation: blank out (but only if truly inactive)
-    opacity = 0;
-  } else if (!isInViewport && !isActive) {
-    // Inactive scene + scrolled past: blank out
-    opacity = 0;
-  } else {
-    // Inactive scene + normal scrolling: dim
-    opacity = 0.3;
-  }
+  // Use useMemo to prevent recalculation during React re-renders from context
+  const opacity = useMemo(() => {
+    // ABSOLUTE PRIORITY: If scene is active, ALWAYS return 1, no exceptions
+    // This must be checked first before ANY other condition
+    if (isActive) {
+      return 1;
+    }
+    
+    // Only process inactive scenes below - active scenes never reach here
+    
+    // If navigated by keyboard (arrow keys), blank out inactive scenes
+    if (wasNavigatedByKeyboard && presenterMode) {
+      return 0;
+    }
+    
+    // If scrolled past, blank out
+    if (!isInViewport) {
+      return 0;
+    }
+    
+    // Normal scrolling: dim inactive scenes
+    return 0.3;
+  }, [isActive, wasNavigatedByKeyboard, presenterMode, isInViewport]);
 
   return (
     <motion.div
@@ -115,7 +123,7 @@ export function SceneReveal({
       data-scene-index={sceneIndex}
       initial={{ opacity: 0, y: 20 }}
       animate={{
-        opacity: opacity,
+        opacity: isActive ? 1 : opacity, // Force active scenes to 1 directly in animate prop
         y: 0,
       }}
       transition={{
