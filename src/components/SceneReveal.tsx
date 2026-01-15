@@ -6,6 +6,7 @@ interface SceneRevealProps {
   isActive: boolean;
   className?: string;
   presenterMode?: boolean;
+  wasNavigatedByKeyboard?: boolean;
   sceneIndex?: number;
   currentSceneIndex?: number;
 }
@@ -21,6 +22,7 @@ export function SceneReveal({
   isActive,
   className = "",
   presenterMode = false,
+  wasNavigatedByKeyboard = false,
   sceneIndex = 0,
   currentSceneIndex = 0,
 }: SceneRevealProps) {
@@ -73,15 +75,9 @@ export function SceneReveal({
       return 1; // Active scene is always clear
     }
     
-    if (presenterMode) {
-      // In presenter mode (arrow keys), blank out inactive scenes
-      // But only if they're not adjacent (to prevent flickering during scroll animation)
-      const distance = Math.abs(sceneIndex - currentSceneIndex);
-      if (distance > 1) {
-        return 0; // Far from current scene - blank out
-      }
-      // Adjacent scenes: dim them instead of blanking to prevent flicker during scroll
-      return 0.3;
+    // If navigated by keyboard (arrow keys), blank out inactive scenes
+    if (wasNavigatedByKeyboard && presenterMode) {
+      return 0; // Blank out when using arrow keys
     }
     
     // Normal scrolling: dim inactive scenes, but blank out if completely scrolled past

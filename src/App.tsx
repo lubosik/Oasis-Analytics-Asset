@@ -12,6 +12,7 @@ function App() {
     setPresenterMode,
     scrollToScene,
     registerSceneRef,
+    wasNavigatedByKeyboard,
   } = useStoryNavigation();
 
   // Detect view mode from URL
@@ -57,6 +58,7 @@ function App() {
                 sceneIndex={index}
                 currentSceneIndex={currentSceneIndex}
                 presenterMode={presenterMode}
+                wasNavigatedByKeyboard={wasNavigatedByKeyboard}
               >
                 <SceneComponent />
               </SceneLayout>

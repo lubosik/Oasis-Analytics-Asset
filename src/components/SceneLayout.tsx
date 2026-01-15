@@ -7,10 +7,11 @@ interface SceneLayoutProps {
   sceneIndex: number;
   currentSceneIndex: number;
   presenterMode?: boolean;
+  wasNavigatedByKeyboard?: boolean;
 }
 
 export const SceneLayout = forwardRef<HTMLElement, SceneLayoutProps>(
-  ({ children, className = "", sceneIndex, currentSceneIndex, presenterMode = false }, ref) => {
+  ({ children, className = "", sceneIndex, currentSceneIndex, presenterMode = false, wasNavigatedByKeyboard = false }, ref) => {
     const isActive = sceneIndex === currentSceneIndex;
 
     return (
@@ -24,6 +25,7 @@ export const SceneLayout = forwardRef<HTMLElement, SceneLayoutProps>(
             <SceneReveal 
               isActive={isActive} 
               presenterMode={presenterMode}
+              wasNavigatedByKeyboard={wasNavigatedByKeyboard}
               sceneIndex={sceneIndex}
               currentSceneIndex={currentSceneIndex}
             >

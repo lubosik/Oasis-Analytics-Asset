@@ -4,10 +4,11 @@ import { TOTAL_SCENES } from "@/story/scenes";
 export function useStoryNavigation() {
   const [currentSceneIndex, setCurrentSceneIndex] = useState(0);
   const [presenterMode, setPresenterMode] = useState(false);
+  const [wasNavigatedByKeyboard, setWasNavigatedByKeyboard] = useState(false);
   const sceneRefs = useRef<(HTMLElement | null)[]>([]);
 
   // Scroll to a specific scene - ensure it's fully in frame accounting for headers
-  const scrollToScene = useCallback((index: number) => {
+  const scrollToScene = useCallback((index: number, fromKeyboard = false) => {
     const sceneElement = sceneRefs.current[index];
     if (sceneElement) {
       // Account for sticky headers (OASIS header ~41px + navigation ~57px = ~98px)
@@ -21,6 +22,16 @@ export function useStoryNavigation() {
         behavior: "smooth"
       });
     }
+    
+    // Mark if navigation was from keyboard
+    if (fromKeyboard) {
+      setWasNavigatedByKeyboard(true);
+      // Reset after a delay to allow scroll to complete
+      setTimeout(() => setWasNavigatedByKeyboard(false), 1000);
+    } else {
+      setWasNavigatedByKeyboard(false);
+    }
+    
     setCurrentSceneIndex(index);
   }, []);
 
@@ -32,12 +43,12 @@ export function useStoryNavigation() {
       if (e.key === "ArrowRight" || e.key === "ArrowDown") {
         e.preventDefault();
         if (currentSceneIndex < TOTAL_SCENES - 1) {
-          scrollToScene(currentSceneIndex + 1);
+          scrollToScene(currentSceneIndex + 1, true); // Mark as keyboard navigation
         }
       } else if (e.key === "ArrowLeft" || e.key === "ArrowUp") {
         e.preventDefault();
         if (currentSceneIndex > 0) {
-          scrollToScene(currentSceneIndex - 1);
+          scrollToScene(currentSceneIndex - 1, true); // Mark as keyboard navigation
         }
       }
     };
@@ -130,6 +141,7 @@ export function useStoryNavigation() {
     setPresenterMode,
     scrollToScene,
     registerSceneRef,
+    wasNavigatedByKeyboard,
   };
 }
 
