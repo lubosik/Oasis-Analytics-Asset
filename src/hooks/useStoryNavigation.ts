@@ -4,11 +4,10 @@ import { TOTAL_SCENES } from "@/story/scenes";
 export function useStoryNavigation() {
   const [currentSceneIndex, setCurrentSceneIndex] = useState(0);
   const [presenterMode, setPresenterMode] = useState(false);
-  const [wasNavigatedByKeyboard, setWasNavigatedByKeyboard] = useState(false);
   const sceneRefs = useRef<(HTMLElement | null)[]>([]);
 
   // Scroll to a specific scene - ensure it's fully in frame accounting for headers
-  const scrollToScene = useCallback((index: number, fromKeyboard = false) => {
+  const scrollToScene = useCallback((index: number) => {
     // CRITICAL: Set the scene as active FIRST, before scrolling
     // This ensures the scene shows immediately even during scroll animation
     setCurrentSceneIndex(index);
@@ -26,16 +25,6 @@ export function useStoryNavigation() {
         behavior: "smooth"
       });
     }
-    
-    // Mark if navigation was from keyboard
-    if (fromKeyboard) {
-      setWasNavigatedByKeyboard(true);
-      // Reset after a longer delay to allow scroll animation to fully complete
-      // Smooth scroll typically takes 500-800ms, so we wait 1200ms to be safe
-      setTimeout(() => setWasNavigatedByKeyboard(false), 1200);
-    } else {
-      setWasNavigatedByKeyboard(false);
-    }
   }, []);
 
   // Keyboard navigation for Presenter mode
@@ -46,12 +35,12 @@ export function useStoryNavigation() {
       if (e.key === "ArrowRight" || e.key === "ArrowDown") {
         e.preventDefault();
         if (currentSceneIndex < TOTAL_SCENES - 1) {
-          scrollToScene(currentSceneIndex + 1, true); // Mark as keyboard navigation
+          scrollToScene(currentSceneIndex + 1);
         }
       } else if (e.key === "ArrowLeft" || e.key === "ArrowUp") {
         e.preventDefault();
         if (currentSceneIndex > 0) {
-          scrollToScene(currentSceneIndex - 1, true); // Mark as keyboard navigation
+          scrollToScene(currentSceneIndex - 1);
         }
       }
     };
@@ -144,7 +133,6 @@ export function useStoryNavigation() {
     setPresenterMode,
     scrollToScene,
     registerSceneRef,
-    wasNavigatedByKeyboard,
   };
 }
 
