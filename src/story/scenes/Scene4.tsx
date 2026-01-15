@@ -1,7 +1,6 @@
 import { AnimatedCounter } from "@/components/AnimatedCounter";
 import { Card } from "@/components/ui/card";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import { Info } from "lucide-react";
+import { CalloutStrip } from "@/components/CalloutStrip";
 import { BANT_VERIFIED } from "@/data/metrics";
 import { motion } from "framer-motion";
 
@@ -32,25 +31,8 @@ export function Scene4() {
               duration={1.2}
             />
           </div>
-          <div className="flex items-center justify-center gap-1.5 sm:gap-2">
-            <span className="text-base sm:text-lg md:text-xl lg:text-2xl font-semibold text-gray-700">
-              BANT Verified
-            </span>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <button
-                  className="text-gray-500 hover:text-gray-700 transition-colors flex-shrink-0"
-                  aria-label="BANT clarification"
-                >
-                  <Info className="h-3 w-3 sm:h-4 sm:w-4" />
-                </button>
-              </TooltipTrigger>
-              <TooltipContent className="max-w-xs">
-                <p className="text-sm">
-                  BANT Verified ≠ Qualified Buyer (they don't fully overlap).
-                </p>
-              </TooltipContent>
-            </Tooltip>
+          <div className="text-base sm:text-lg md:text-xl lg:text-2xl font-semibold text-gray-700">
+            BANT Verified
           </div>
         </div>
       </div>
@@ -95,11 +77,11 @@ export function Scene4() {
         ))}
       </div>
 
-      {/* Subtle clarification text */}
-      <div className="text-center mt-6 sm:mt-8 md:mt-10 px-2">
-        <p className="text-xs sm:text-sm text-gray-500">
-          Evidence detected in call transcripts
-        </p>
+      {/* Callout strip */}
+      <div className="mt-6 sm:mt-8 md:mt-10 px-2 max-w-4xl mx-auto">
+        <CalloutStrip>
+          BANT evidence was detected automatically in call transcripts. This means verified buyers are ready for sales action.
+        </CalloutStrip>
       </div>
     </div>
   );

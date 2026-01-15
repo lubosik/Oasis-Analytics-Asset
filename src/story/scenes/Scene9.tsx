@@ -1,21 +1,28 @@
 import { AnimatedCounter } from "@/components/AnimatedCounter";
 import { Card } from "@/components/ui/card";
+import { IllustrativeCalculator } from "@/components/IllustrativeCalculator";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Info } from "lucide-react";
 import {
+  BANT_VERIFIED,
   QUALIFIED_BUYERS,
   INTERESTED_LEADS,
   CALLBACK_REQUESTS_DETECTED,
   TIME_SAVINGS,
 } from "@/data/metrics";
+import { useStoryContext } from "@/contexts/StoryContext";
 import { motion } from "framer-motion";
 import { CheckCircle2, Clock, Phone, Zap } from "lucide-react";
 
 export function Scene9() {
+  const { proofMode } = useStoryContext();
+
   const queueItems = [
     {
       icon: CheckCircle2,
-      title: "Qualified Buyers",
-      count: QUALIFIED_BUYERS.number,
-      display: QUALIFIED_BUYERS.display,
+      title: "BANT Verified",
+      count: BANT_VERIFIED.number,
+      display: BANT_VERIFIED.display,
       label: "Ready for sales action",
       color: "text-gray-900",
       bgColor: "bg-gray-50",
@@ -42,6 +49,20 @@ export function Scene9() {
       borderColor: "border-gray-200",
     },
   ];
+
+  // Add Qualified Buyers as optional context in proof mode
+  if (proofMode) {
+    queueItems.push({
+      icon: CheckCircle2,
+      title: "Qualified Buyers (client-defined)",
+      count: QUALIFIED_BUYERS.number,
+      display: QUALIFIED_BUYERS.display,
+      label: "Client's internal qualification rules",
+      color: "text-gray-700",
+      bgColor: "bg-gray-50",
+      borderColor: "border-gray-200",
+    });
+  }
 
   return (
     <div className="w-full">
@@ -99,7 +120,7 @@ export function Scene9() {
       </div>
 
       {/* Time Savings Section */}
-      <div className="max-w-4xl mx-auto mt-8 sm:mt-10 md:mt-12 lg:mt-16 px-2">
+      <div className="max-w-4xl mx-auto mt-8 sm:mt-10 md:mt-12 lg:mt-16 px-2 space-y-6 sm:space-y-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -142,6 +163,15 @@ export function Scene9() {
               Human team would need ~{TIME_SAVINGS.displayHumanTeamHours} hours
             </p>
           </Card>
+        </motion.div>
+
+        {/* Illustrative Calculator */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.8 }}
+        >
+          <IllustrativeCalculator />
         </motion.div>
       </div>
     </div>

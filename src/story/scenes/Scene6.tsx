@@ -3,6 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { AnimatedCounter } from "@/components/AnimatedCounter";
+import { CalloutStrip } from "@/components/CalloutStrip";
 import { INTERESTED_CALLBACK_BREAKDOWN, INTERESTED_FROM_CALLBACKS } from "@/data/metrics";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown, ChevronUp } from "lucide-react";
@@ -10,29 +11,22 @@ import { ChevronDown, ChevronUp } from "lucide-react";
 export function Scene6() {
   const [showAll, setShowAll] = useState(false);
 
-  // Compute buyer tiers aggregate from constants
-  const buyerTiersTotal =
+  // Compute buyer tiers aggregate from constants (without showing individual tiers)
+  const buyersIdentifiedTotal =
     INTERESTED_CALLBACK_BREAKDOWN.tier1Buyer.number +
     INTERESTED_CALLBACK_BREAKDOWN.tier2Buyer.number +
     INTERESTED_CALLBACK_BREAKDOWN.tier3Buyer.number;
 
-  const buyerTiersDisplay = buyerTiersTotal.toLocaleString();
+  const buyersIdentifiedDisplay = buyersIdentifiedTotal.toLocaleString();
 
-  // Buyer tier categories
-  const buyerTiers = [
-    { label: "Tier 1 Buyer", count: INTERESTED_CALLBACK_BREAKDOWN.tier1Buyer, key: "tier1Buyer" },
-    { label: "Tier 2 Buyer", count: INTERESTED_CALLBACK_BREAKDOWN.tier2Buyer, key: "tier2Buyer" },
-    { label: "Tier 3 Buyer", count: INTERESTED_CALLBACK_BREAKDOWN.tier3Buyer, key: "tier3Buyer" },
-  ];
-
-  // Other outcome categories
+  // Other outcome categories (non-proprietary)
   const otherOutcomes = [
     { label: "Requested Callback Again", count: INTERESTED_CALLBACK_BREAKDOWN.requestedCallbackAgain, key: "requestedCallbackAgain" },
     { label: "Researcher", count: INTERESTED_CALLBACK_BREAKDOWN.researcher, key: "researcher" },
     { label: "Browser", count: INTERESTED_CALLBACK_BREAKDOWN.browser, key: "browser" },
   ];
 
-  // Default view shows all buyer tiers + top 2 other outcomes
+  // Default view shows top 2 other outcomes
   const defaultOtherOutcomes = otherOutcomes.slice(0, 2);
   const hiddenOtherOutcomes = otherOutcomes.slice(2);
   const displayedOtherOutcomes = showAll ? otherOutcomes : defaultOtherOutcomes;
@@ -50,44 +44,31 @@ export function Scene6() {
       </div>
 
       <div className="max-w-5xl mx-auto px-2 space-y-6 sm:space-y-8">
-        {/* Buyer Tiers Block - Hero */}
+        {/* Buyers Identified Block - Hero */}
         <Card className="p-6 sm:p-8 md:p-10 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 border-2 border-gray-700">
-          <div className="text-center mb-6 sm:mb-8">
+          <div className="text-center mb-4 sm:mb-6">
             <h2 className="text-lg sm:text-xl md:text-2xl text-gray-300 mb-3 sm:mb-4">
-              Buyer tiers total (Tier 1–3)
+              Buyers identified (client-defined tiers)
             </h2>
             <div className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold text-white mb-4 sm:mb-6">
               <AnimatedCounter
-                targetNumber={buyerTiersTotal}
-                displayString={buyerTiersDisplay}
+                targetNumber={buyersIdentifiedTotal}
+                displayString={buyersIdentifiedDisplay}
                 duration={1.2}
               />
             </div>
-          </div>
-
-          {/* Buyer tier breakdown */}
-          <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3">
-            <AnimatePresence mode="popLayout">
-              {buyerTiers.map((tier, index) => (
-                <motion.div
-                  key={tier.key}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.9 }}
-                  transition={{ duration: 0.3, delay: index * 0.05 }}
-                >
-                  <Badge
-                    variant="secondary"
-                    className="text-xs sm:text-sm md:text-base px-3 sm:px-4 py-1.5 sm:py-2 bg-gray-700 text-white border-gray-600 font-semibold"
-                  >
-                    <span className="mr-1 sm:mr-2">{tier.label}:</span>
-                    <span className="font-bold">{tier.count.display}</span>
-                  </Badge>
-                </motion.div>
-              ))}
-            </AnimatePresence>
+            <p className="text-xs sm:text-sm md:text-base text-gray-400">
+              Buyer tiers were defined by the client; breakdown withheld.
+            </p>
           </div>
         </Card>
+
+        {/* Callout strip */}
+        <div className="px-2">
+          <CalloutStrip>
+            Breakdown of the {INTERESTED_FROM_CALLBACKS.display} interested from callbacks. Buyers identified are ready for sales action.
+          </CalloutStrip>
+        </div>
 
         {/* Other Outcomes Block */}
         <div>

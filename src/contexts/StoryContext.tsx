@@ -1,20 +1,28 @@
-import { createContext, useContext, type ReactNode } from "react";
+import { createContext, useContext, type ReactNode, useState } from "react";
+
+export type ViewMode = "general" | "private";
 
 interface StoryContextValue {
   proofMode: boolean;
+  setProofMode: (enabled: boolean) => void;
+  viewMode: ViewMode;
 }
 
 const StoryContext = createContext<StoryContextValue | undefined>(undefined);
 
 export function StoryProvider({
   children,
-  proofMode,
+  initialProofMode = false,
+  initialViewMode = "general",
 }: {
   children: ReactNode;
-  proofMode: boolean;
+  initialProofMode?: boolean;
+  initialViewMode?: ViewMode;
 }) {
+  const [proofMode, setProofMode] = useState(initialProofMode);
+
   return (
-    <StoryContext.Provider value={{ proofMode }}>
+    <StoryContext.Provider value={{ proofMode, setProofMode, viewMode: initialViewMode }}>
       {children}
     </StoryContext.Provider>
   );

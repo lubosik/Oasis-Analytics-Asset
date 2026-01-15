@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useStoryContext } from "@/contexts/StoryContext";
 
 interface StoryNavigationProps {
   currentSceneIndex: number;
@@ -17,6 +18,7 @@ export function StoryNavigation({
   presenterMode,
   onPresenterModeChange,
 }: StoryNavigationProps) {
+  const { proofMode, setProofMode } = useStoryContext();
   const handlePrevious = () => {
     if (currentSceneIndex > 0) {
       onSceneChange(currentSceneIndex - 1);
@@ -122,13 +124,21 @@ export function StoryNavigation({
           </Button>
         </div>
 
-        {/* Right: Presenter mode toggle */}
-        <div className="flex items-center justify-end md:justify-start gap-2 md:gap-3">
+        {/* Right: Toggles */}
+        <div className="flex items-center justify-end md:justify-start gap-2 md:gap-3 flex-wrap">
           {!presenterMode && (
             <div className="hidden lg:flex items-center gap-1.5 text-xs text-gray-500">
               <span>Turn on Presenter to use arrow keys</span>
             </div>
           )}
+          <div className="flex items-center gap-1.5 md:gap-2">
+            <span className="text-xs md:text-sm text-gray-700 hidden sm:inline">Proof</span>
+            <Switch
+              checked={proofMode}
+              onCheckedChange={setProofMode}
+              aria-label="Toggle proof mode"
+            />
+          </div>
           <div className="flex items-center gap-1.5 md:gap-2">
             <span className="text-xs md:text-sm text-gray-700 hidden sm:inline">Presenter</span>
             <Switch

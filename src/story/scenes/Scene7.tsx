@@ -1,12 +1,16 @@
 import { AnimatedCounter } from "@/components/AnimatedCounter";
 import { Card } from "@/components/ui/card";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { CalloutStrip } from "@/components/CalloutStrip";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Info } from "lucide-react";
-import { RETRY_SUMMARY, METRICS_META } from "@/data/metrics";
+import { RETRY_SUMMARY, PICKUP_BY_ATTEMPT, METRICS_META } from "@/data/metrics";
+import { useStoryContext } from "@/contexts/StoryContext";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 
 export function Scene7() {
+  const { proofMode } = useStoryContext();
+
   return (
     <div className="w-full">
       {/* Headline */}
@@ -132,25 +136,55 @@ export function Scene7() {
         </div>
       </div>
 
-      {/* Tracking note as footnote */}
-      <div className="text-center mt-6 sm:mt-8 md:mt-10 lg:mt-12 px-2">
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <button
-              className="inline-flex items-center gap-1 text-xs text-gray-500 hover:text-gray-700 transition-colors"
-              aria-label="Tracking note"
-            >
-              <Info className="h-3 w-3" />
-              <span>Note</span>
-            </button>
-          </TooltipTrigger>
-          <TooltipContent className="max-w-md p-4">
-            <p className="text-sm text-gray-700">
-              {METRICS_META.trackingNote}
-            </p>
-          </TooltipContent>
-        </Tooltip>
+      {/* Persistence payoff highlight */}
+      <div className="mt-6 sm:mt-8 md:mt-10 lg:mt-12 px-2 max-w-4xl mx-auto">
+        <Card className="p-4 sm:p-5 md:p-6 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 border-2 border-gray-700">
+          <div className="text-center">
+            <div className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-2 sm:mb-3">
+              <AnimatedCounter
+                targetNumber={PICKUP_BY_ATTEMPT.sixPlusCalls.number}
+                displayString={PICKUP_BY_ATTEMPT.sixPlusCalls.display}
+                duration={1.2}
+              />
+            </div>
+            <div className="text-sm sm:text-base md:text-lg text-gray-200 mb-1 sm:mb-2">
+              Even 6+ call attempts produced pickups
+            </div>
+            <div className="text-xs sm:text-sm text-gray-400">
+              ({PICKUP_BY_ATTEMPT.sixPlusCalls.percent} pickup rate)
+            </div>
+          </div>
+        </Card>
       </div>
+
+      {/* Callout strip */}
+      <div className="mt-4 sm:mt-6 px-2 max-w-4xl mx-auto">
+        <CalloutStrip>
+          Persistence creates extra answers. Retries weren't spam—they converted leads that didn't answer the first time.
+        </CalloutStrip>
+      </div>
+
+      {/* Tracking note as footnote - only in proof mode */}
+      {proofMode && (
+        <div className="text-center mt-6 sm:mt-8 md:mt-10 lg:mt-12 px-2">
+          <Popover>
+            <PopoverTrigger asChild>
+              <button
+                className="inline-flex items-center gap-1 text-xs text-gray-500 hover:text-gray-700 transition-colors"
+                aria-label="Tracking note"
+              >
+                <Info className="h-3 w-3" />
+                <span>Note</span>
+              </button>
+            </PopoverTrigger>
+            <PopoverContent className="max-w-md p-4">
+              <p className="text-sm text-gray-700">
+                {METRICS_META.trackingNote}
+              </p>
+            </PopoverContent>
+          </Popover>
+        </div>
+      )}
     </div>
   );
 }

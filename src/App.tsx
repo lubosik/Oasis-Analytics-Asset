@@ -1,8 +1,9 @@
+import { useMemo } from "react";
 import { SCENES, TOTAL_SCENES } from "@/story/scenes";
 import { StoryNavigation } from "@/components/StoryNavigation";
 import { SceneLayout } from "@/components/SceneLayout";
 import { useStoryNavigation } from "@/hooks/useStoryNavigation";
-import { StoryProvider } from "@/contexts/StoryContext";
+import { StoryProvider, type ViewMode } from "@/contexts/StoryContext";
 
 function App() {
   const {
@@ -13,8 +14,21 @@ function App() {
     registerSceneRef,
   } = useStoryNavigation();
 
+  // Detect view mode from URL
+  const viewMode: ViewMode = useMemo(() => {
+    const params = new URLSearchParams(window.location.search);
+    const viewParam = params.get("view");
+    const pathname = window.location.pathname;
+    
+    // Check for /private route or ?view=private
+    if (pathname.includes("/private") || viewParam === "private") {
+      return "private";
+    }
+    return "general";
+  }, []);
+
   return (
-    <StoryProvider proofMode={false}>
+    <StoryProvider initialProofMode={false} initialViewMode={viewMode}>
       <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50">
         {/* OASIS Branding Header */}
         <div className="sticky top-0 z-50 w-full border-b bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 text-white py-1.5 sm:py-2 px-2 sm:px-4">

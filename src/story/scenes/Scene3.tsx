@@ -1,10 +1,18 @@
 import { AnimatedCounter } from "@/components/AnimatedCounter";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { CalloutStrip } from "@/components/CalloutStrip";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Info } from "lucide-react";
-import { LEADS_PICKED_UP, INTERESTED_LEADS, QUALIFIED_BUYERS, INDUSTRY_STANDARDS } from "@/data/metrics";
+import { LEADS_PICKED_UP, INTERESTED_LEADS, BANT_VERIFIED, QUALIFIED_BUYERS, INDUSTRY_STANDARDS } from "@/data/metrics";
+import { useStoryContext } from "@/contexts/StoryContext";
 import { motion } from "framer-motion";
 
 export function Scene3() {
+  const { proofMode } = useStoryContext();
+  
+  // Calculate BANT percent of answered calls
+  const bantPercent = Math.round((BANT_VERIFIED.number / LEADS_PICKED_UP.number) * 100);
+  const bantPercentDisplay = `${bantPercent}%`;
+
   return (
     <div className="w-full">
       {/* Headline */}
@@ -77,7 +85,7 @@ export function Scene3() {
           </div>
         </motion.div>
 
-        {/* Qualified Buyers - Star of the show with glow effect */}
+        {/* BANT Verified - Primary verified buyer metric */}
         <motion.div
           initial={{ opacity: 0, y: -20, scale: 0.95 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -99,38 +107,78 @@ export function Scene3() {
               repeatType: "reverse",
             }}
           >
-            {/* Subtle spotlight gradient overlay with modern colors */}
+            {/* Subtle spotlight gradient overlay */}
             <div className="absolute inset-0 bg-gradient-to-b from-blue-500/10 via-purple-500/5 to-transparent pointer-events-none"></div>
             
             <div className="relative z-10">
               <div className="flex items-center justify-center gap-1.5 sm:gap-2 mb-1 sm:mb-2">
                 <div className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white break-words">
                   <AnimatedCounter
+                    targetNumber={BANT_VERIFIED.number}
+                    displayString={BANT_VERIFIED.display}
+                    duration={1.2}
+                  />
+                </div>
+              </div>
+              <div className="text-lg sm:text-xl md:text-2xl lg:text-3xl text-white font-semibold mb-2 sm:mb-3">
+                Verified Buyers (BANT) ({bantPercentDisplay})
+              </div>
+              <div className="text-xs sm:text-sm md:text-base text-gray-300 mb-1 sm:mb-2">
+                Budget • Authority • Need • Timing
+              </div>
+              <div className="text-xs sm:text-sm text-gray-400">
+                Industry-standard qualification framework
+              </div>
+            </div>
+          </motion.div>
+        </motion.div>
+
+        {/* Qualified Buyers - Secondary context */}
+        {proofMode && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 1.1 }}
+            className="relative"
+          >
+            <div className="bg-gray-100 rounded-lg p-4 sm:p-5 md:p-6 text-center border-2 border-gray-300">
+              <div className="flex items-center justify-center gap-1.5 sm:gap-2 mb-1 sm:mb-2">
+                <div className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-gray-700 break-words">
+                  <AnimatedCounter
                     targetNumber={QUALIFIED_BUYERS.number}
                     displayString={QUALIFIED_BUYERS.display}
                     duration={1.2}
                   />
                 </div>
-                <Tooltip>
-                  <TooltipTrigger asChild>
+                <Popover>
+                  <PopoverTrigger asChild>
                     <button
-                      className="text-gray-300 hover:text-white transition-colors flex-shrink-0"
+                      className="text-gray-500 hover:text-gray-700 transition-colors flex-shrink-0"
                       aria-label="Definition of Qualified"
                     >
-                      <Info className="h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6" />
+                      <Info className="h-3 w-3 sm:h-4 sm:w-4" />
                     </button>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p className="text-sm">Qualified = client-defined rules</p>
-                  </TooltipContent>
-                </Tooltip>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-80 p-4">
+                    <p className="text-sm text-gray-700">
+                      Qualified was defined by the client's internal rules for this project and does not perfectly overlap with BANT.
+                    </p>
+                  </PopoverContent>
+                </Popover>
               </div>
-              <div className="text-lg sm:text-xl md:text-2xl lg:text-3xl text-white font-semibold">
-                Qualified Buyers ({QUALIFIED_BUYERS.percent})
+              <div className="text-sm sm:text-base md:text-lg text-gray-600">
+                Qualified Buyers (client-defined) ({QUALIFIED_BUYERS.percent})
               </div>
             </div>
           </motion.div>
-        </motion.div>
+        )}
+      </div>
+
+      {/* Callout strip */}
+      <div className="mt-4 sm:mt-6 px-2 max-w-4xl mx-auto">
+        <CalloutStrip>
+          BANT (Budget, Authority, Need, Timing) is the industry-standard framework for verifying buyer readiness. This means verified buyers are ready for sales action.
+        </CalloutStrip>
       </div>
 
       {/* One-liner and industry comparison */}
@@ -139,7 +187,7 @@ export function Scene3() {
           From conversations your team didn't have to chase.
         </p>
         <p className="text-[10px] sm:text-xs md:text-sm text-gray-500">
-          Industry average qualified rate: {INDUSTRY_STANDARDS.averageQualifiedRate} • {QUALIFIED_BUYERS.percent} is 2-3x better
+          Industry average qualified rate: {INDUSTRY_STANDARDS.averageQualifiedRate} • {bantPercentDisplay} is 2-3x better
         </p>
       </div>
     </div>

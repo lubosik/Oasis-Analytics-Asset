@@ -1,6 +1,7 @@
 import { AnimatedCounter } from "@/components/AnimatedCounter";
 import { Card } from "@/components/ui/card";
 import { TOTAL_CALLS_MADE, UNIQUE_CUSTOMERS, METRICS_META } from "@/data/metrics";
+import { AboutOasis } from "@/components/AboutOasis";
 import { motion } from "framer-motion";
 
 export function Scene1() {
@@ -11,6 +12,11 @@ export function Scene1() {
         <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-gray-900 mb-3 sm:mb-4 leading-tight">
           Leads → real conversations → real buyers.
         </h1>
+      </div>
+
+      {/* About Oasis module */}
+      <div className="mb-8 sm:mb-12">
+        <AboutOasis />
       </div>
 
       {/* Two huge metric cards */}
@@ -87,10 +93,10 @@ export function Scene1() {
       {/* Support line and credibility */}
       <div className="text-center mt-6 sm:mt-8 md:mt-12 space-y-1 sm:space-y-2 px-2">
         <p className="text-base sm:text-lg md:text-xl text-gray-700">
-          Works on fresh inbound and older leads. This case study highlights reactivation.
+          This case study shows reactivation of older leads. The system works for fresh inbound and older leads.
         </p>
         <p className="text-xs sm:text-sm md:text-base text-gray-500">
-          {METRICS_META.dataSpan} of data.
+          {METRICS_META.dataSpan} of data. Dataset shown here is predominantly re-engaged archived leads (12+ months old).
         </p>
       </div>
     </div>

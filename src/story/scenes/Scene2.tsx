@@ -1,7 +1,6 @@
 import { AnimatedCounter } from "@/components/AnimatedCounter";
 import { Badge } from "@/components/ui/badge";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Info } from "lucide-react";
+import { CalloutStrip } from "@/components/CalloutStrip";
 import { LEADS_PICKED_UP, DIDNT_PICK_UP, INDUSTRY_STANDARDS } from "@/data/metrics";
 
 export function Scene2() {
@@ -30,24 +29,8 @@ export function Scene2() {
 
       {/* Split bar visual */}
       <div className="max-w-4xl mx-auto px-2">
-        <div className="mb-3 sm:mb-4 flex items-center justify-between text-xs sm:text-sm text-gray-600">
+        <div className="mb-3 sm:mb-4 text-xs sm:text-sm text-gray-600 text-center">
           <span>Pickup rate</span>
-          <Popover>
-            <PopoverTrigger asChild>
-              <button
-                className="inline-flex items-center gap-1 text-gray-500 hover:text-gray-700 transition-colors"
-                aria-label="More information about pickup rate"
-              >
-                <Info className="h-4 w-4" />
-                <span className="text-xs">Info</span>
-              </button>
-            </PopoverTrigger>
-            <PopoverContent className="w-80 p-4">
-              <p className="text-sm text-gray-700">
-                Pickup rates vary by lead source. Older leads generally pick up less, so the impact is what happens after an answer.
-              </p>
-            </PopoverContent>
-          </Popover>
         </div>
 
         {/* Split bar */}
@@ -89,6 +72,13 @@ export function Scene2() {
               </div>
             </div>
           </div>
+        </div>
+
+        {/* Callout strip */}
+        <div className="mt-4 sm:mt-6 px-2">
+          <CalloutStrip>
+            Pickup rates vary by lead source. Older leads generally pick up less, so the impact is what happens after an answer.
+          </CalloutStrip>
         </div>
 
         {/* Summary text with industry comparison */}

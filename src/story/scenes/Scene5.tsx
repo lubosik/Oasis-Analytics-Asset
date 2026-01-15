@@ -1,5 +1,6 @@
 import { AnimatedCounter } from "@/components/AnimatedCounter";
 import { Card } from "@/components/ui/card";
+import { CalloutStrip } from "@/components/CalloutStrip";
 import {
   Accordion,
   AccordionContent,
@@ -15,10 +16,19 @@ import {
   NOT_CONVERTED_CALLBACK_BREAKDOWN,
   INDUSTRY_STANDARDS,
 } from "@/data/metrics";
+import { useStoryContext } from "@/contexts/StoryContext";
 import { motion } from "framer-motion";
 import { Phone } from "lucide-react";
 
 export function Scene5() {
+  const { proofMode } = useStoryContext();
+
+  // Compute buyer tiers aggregate (without showing individual tiers)
+  const buyersIdentifiedTotal =
+    INTERESTED_CALLBACK_BREAKDOWN.tier1Buyer.number +
+    INTERESTED_CALLBACK_BREAKDOWN.tier2Buyer.number +
+    INTERESTED_CALLBACK_BREAKDOWN.tier3Buyer.number;
+  const buyersIdentifiedDisplay = buyersIdentifiedTotal.toLocaleString();
 
   return (
     <div className="w-full">
@@ -64,13 +74,45 @@ export function Scene5() {
         </div>
       </div>
 
-      {/* Two result cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 md:gap-8 max-w-5xl mx-auto mb-6 sm:mb-8 px-2">
-        {/* Interested from callbacks */}
+      {/* Callout strip */}
+      <div className="mb-6 sm:mb-8 px-2 max-w-4xl mx-auto">
+        <CalloutStrip>
+          When people ask for a callback, the system doesn't drop the ball. It can follow up at the requested time, including awkward times or time zones, and can confirm intent before you ever have to pick up the phone.
+        </CalloutStrip>
+      </div>
+
+      {/* Buyer identification and interested results */}
+      <div className="max-w-5xl mx-auto mb-6 sm:mb-8 px-2 space-y-4 sm:space-y-6">
+        {/* Buyers identified card */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.3 }}
+        >
+          <Card className="p-5 sm:p-6 md:p-8 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 border-2 border-gray-700 shadow-lg">
+            <div className="text-center">
+              <div className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-1 sm:mb-2 break-words">
+                <AnimatedCounter
+                  targetNumber={buyersIdentifiedTotal}
+                  displayString={buyersIdentifiedDisplay}
+                  duration={1.2}
+                />
+              </div>
+              <div className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-200 mb-0.5 sm:mb-1">
+                Buyers identified (client-defined tiers)
+              </div>
+              <div className="text-xs sm:text-sm text-gray-400">
+                Buyer tiers were defined by the client; breakdown withheld.
+              </div>
+            </div>
+          </Card>
+        </motion.div>
+
+        {/* Interested from callbacks */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.5 }}
         >
           <Card className="p-5 sm:p-6 md:p-8 bg-gradient-to-br from-blue-50 via-gray-50 to-white border-2 border-gray-200 shadow-lg">
             <div className="text-center">
@@ -91,30 +133,32 @@ export function Scene5() {
           </Card>
         </motion.div>
 
-        {/* Didn't convert */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.5 }}
-        >
-          <Card className="p-5 sm:p-6 md:p-8 bg-gradient-to-br from-gray-50 to-white border-2 border-gray-200 shadow-lg">
-            <div className="text-center">
-              <div className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-700 mb-1 sm:mb-2 break-words">
-                <AnimatedCounter
-                  targetNumber={NOT_CONVERTED_CALLBACKS.number}
-                  displayString={NOT_CONVERTED_CALLBACKS.display}
-                  duration={1.2}
-                />
+        {/* Not Converted - Only in proof mode */}
+        {proofMode && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.7 }}
+          >
+            <Card className="p-5 sm:p-6 md:p-8 bg-gradient-to-br from-gray-50 to-white border-2 border-gray-200 shadow-lg">
+              <div className="text-center">
+                <div className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-700 mb-1 sm:mb-2 break-words">
+                  <AnimatedCounter
+                    targetNumber={NOT_CONVERTED_CALLBACKS.number}
+                    displayString={NOT_CONVERTED_CALLBACKS.display}
+                    duration={1.2}
+                  />
+                </div>
+                <div className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-700 mb-0.5 sm:mb-1">
+                  Didn't convert
+                </div>
+                <div className="text-xs sm:text-sm md:text-base lg:text-lg font-semibold text-gray-600">
+                  ({NOT_CONVERTED_CALLBACKS.percent})
+                </div>
               </div>
-              <div className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-700 mb-0.5 sm:mb-1">
-                Didn't convert
-              </div>
-              <div className="text-xs sm:text-sm md:text-base lg:text-lg font-semibold text-gray-600">
-                ({NOT_CONVERTED_CALLBACKS.percent})
-              </div>
-            </div>
-          </Card>
-        </motion.div>
+            </Card>
+          </motion.div>
+        )}
       </div>
 
       {/* Industry comparison */}
@@ -153,21 +197,9 @@ export function Scene5() {
                         </TableHeader>
                         <TableBody>
                           <TableRow>
-                            <TableCell>Tier 1 Buyer</TableCell>
+                            <TableCell>Buyers identified (client-defined tiers)</TableCell>
                             <TableCell className="text-right font-medium">
-                              {INTERESTED_CALLBACK_BREAKDOWN.tier1Buyer.display}
-                            </TableCell>
-                          </TableRow>
-                          <TableRow>
-                            <TableCell>Tier 2 Buyer</TableCell>
-                            <TableCell className="text-right font-medium">
-                              {INTERESTED_CALLBACK_BREAKDOWN.tier2Buyer.display}
-                            </TableCell>
-                          </TableRow>
-                          <TableRow>
-                            <TableCell>Tier 3 Buyer</TableCell>
-                            <TableCell className="text-right font-medium">
-                              {INTERESTED_CALLBACK_BREAKDOWN.tier3Buyer.display}
+                              {buyersIdentifiedDisplay}
                             </TableCell>
                           </TableRow>
                           <TableRow>
