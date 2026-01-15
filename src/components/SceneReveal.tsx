@@ -27,7 +27,16 @@ export function SceneReveal({
   currentSceneIndex = 0,
 }: SceneRevealProps) {
   const [isInViewport, setIsInViewport] = useState(true);
+  const [isScrolling, setIsScrolling] = useState(false);
   const elementRef = useRef<HTMLDivElement>(null);
+
+  // CRITICAL: When scene becomes active, immediately set viewport to true and disable scrolling flag
+  useEffect(() => {
+    if (isActive) {
+      setIsInViewport(true);
+      setIsScrolling(false);
+    }
+  }, [isActive]);
 
   // Check if scene is in viewport (only for inactive scenes in normal scrolling mode)
   useEffect(() => {
@@ -62,8 +71,12 @@ export function SceneReveal({
     
     let timeoutId: ReturnType<typeof setTimeout>;
     const handleScroll = () => {
+      setIsScrolling(true);
       clearTimeout(timeoutId);
-      timeoutId = setTimeout(checkViewport, 100);
+      timeoutId = setTimeout(() => {
+        setIsScrolling(false);
+        checkViewport();
+      }, 150);
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
@@ -79,14 +92,15 @@ export function SceneReveal({
 
   // Calculate opacity - ABSOLUTE SIMPLICITY: active = 1, inactive = 0 (arrow keys) or 0.3 (scroll)
   // CRITICAL: isActive check MUST be first and return 1 immediately
+  // Also: if scene just became active, give it a grace period during scroll animation
   let opacity: number;
   if (isActive) {
-    // Active scene: ALWAYS clear, no exceptions, no conditions
+    // Active scene: ALWAYS clear, no exceptions, no conditions, even during scroll
     opacity = 1;
-  } else if (wasNavigatedByKeyboard && presenterMode) {
-    // Inactive scene + arrow key navigation: blank out
+  } else if (wasNavigatedByKeyboard && presenterMode && !isActive) {
+    // Inactive scene + arrow key navigation: blank out (but only if truly inactive)
     opacity = 0;
-  } else if (!isInViewport) {
+  } else if (!isInViewport && !isActive) {
     // Inactive scene + scrolled past: blank out
     opacity = 0;
   } else {

@@ -9,6 +9,10 @@ export function useStoryNavigation() {
 
   // Scroll to a specific scene - ensure it's fully in frame accounting for headers
   const scrollToScene = useCallback((index: number, fromKeyboard = false) => {
+    // CRITICAL: Set the scene as active FIRST, before scrolling
+    // This ensures the scene shows immediately even during scroll animation
+    setCurrentSceneIndex(index);
+    
     const sceneElement = sceneRefs.current[index];
     if (sceneElement) {
       // Account for sticky headers (OASIS header ~41px + navigation ~57px = ~98px)
@@ -26,13 +30,12 @@ export function useStoryNavigation() {
     // Mark if navigation was from keyboard
     if (fromKeyboard) {
       setWasNavigatedByKeyboard(true);
-      // Reset after a delay to allow scroll to complete
-      setTimeout(() => setWasNavigatedByKeyboard(false), 1000);
+      // Reset after a longer delay to allow scroll animation to fully complete
+      // Smooth scroll typically takes 500-800ms, so we wait 1200ms to be safe
+      setTimeout(() => setWasNavigatedByKeyboard(false), 1200);
     } else {
       setWasNavigatedByKeyboard(false);
     }
-    
-    setCurrentSceneIndex(index);
   }, []);
 
   // Keyboard navigation for Presenter mode
