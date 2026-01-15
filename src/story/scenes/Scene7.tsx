@@ -23,7 +23,7 @@ export function Scene7() {
       {/* Intelligent retry explanation */}
       <div className="mb-6 sm:mb-8 px-2 max-w-4xl mx-auto">
         <CalloutStrip>
-          <strong>How it works:</strong> When the AI called and they didn't pick up, we didn't just put the phone down. The system intelligently retried them—up to 6 times—at different times and days. This persistence created extra answers that wouldn't have happened with a single call attempt.
+          <strong>How it works:</strong> When the AI called and they didn't pick up, we didn't just put the phone down. The system intelligently retried them up to 6 times at different times and days. We don't leave it to you after one try. We keep retrying until we know if the lead is an interested buyer. This persistence created extra answers that wouldn't have happened with a single call attempt.
         </CalloutStrip>
       </div>
 
@@ -167,7 +167,7 @@ export function Scene7() {
       {/* Callout strip */}
       <div className="mt-4 sm:mt-6 px-2 max-w-4xl mx-auto">
         <CalloutStrip>
-          Persistence creates extra answers. Retries weren't spam—they converted leads that didn't answer the first time.
+          Persistence creates extra answers. Retries weren't spam. They converted leads that didn't answer the first time. We keep trying until we know if the lead is an interested buyer.
         </CalloutStrip>
       </div>
 

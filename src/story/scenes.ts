@@ -70,13 +70,13 @@ export const SCENES: Scene[] = [
   {
     id: "scene-7",
     title: "Retries",
-    headline: "Retries weren't spam — they created extra answers",
+    headline: "Retries weren't spam. They created extra answers",
     component: Scene7,
   },
   {
     id: "scene-8",
     title: "Attempts",
-    headline: "Most answers happen early — but later attempts still pay",
+    headline: "Most answers happen early, but later attempts still pay",
     component: Scene8,
   },
   {

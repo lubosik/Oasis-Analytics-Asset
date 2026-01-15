@@ -78,7 +78,7 @@ export function Scene5() {
       {/* Callout strip */}
       <div className="mb-6 sm:mb-8 px-2 max-w-4xl mx-auto">
         <CalloutStrip>
-          <strong>What is a callback?</strong> When someone can't talk right now, they ask to be called back later. The system is intelligent—it doesn't just hang up. It remembers the request, calls back at the exact time they specified (even if it's 9pm or a different time zone), and confirms their interest before a human ever needs to pick up the phone. Example: "Can you call me tomorrow at 3pm?" → System calls exactly at 3pm tomorrow.
+          <strong>What is a callback?</strong> When someone can't talk right now, they ask to be called back later. The system is intelligent. It doesn't just hang up. It remembers the request, calls back at the exact time they specified (even if it's 9pm or a different time zone), and keeps calling back until it confirms their interest. We don't leave it to you after one try. We keep following up until we know if the lead is an interested buyer. Example: "Can you call me tomorrow at 3pm?" System calls exactly at 3pm tomorrow.
         </CalloutStrip>
       </div>
 
