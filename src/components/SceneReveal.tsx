@@ -77,14 +77,22 @@ export function SceneReveal({
     };
   }, [presenterMode, sceneIndex, isActive]);
 
-  // Calculate opacity - SIMPLE LOGIC: active scenes always 1, inactive depends on mode
-  const opacity = isActive 
-    ? 1  // Active scenes ALWAYS visible - no exceptions
-    : (wasNavigatedByKeyboard && presenterMode)
-      ? 0  // Arrow key navigation: blank out inactive scenes
-      : (!isInViewport)
-        ? 0  // Completely scrolled past: blank out
-        : 0.3;  // Normal scrolling: dim inactive scenes
+  // Calculate opacity - ABSOLUTE SIMPLICITY: active = 1, inactive = 0 (arrow keys) or 0.3 (scroll)
+  // CRITICAL: isActive check MUST be first and return 1 immediately
+  let opacity: number;
+  if (isActive) {
+    // Active scene: ALWAYS clear, no exceptions, no conditions
+    opacity = 1;
+  } else if (wasNavigatedByKeyboard && presenterMode) {
+    // Inactive scene + arrow key navigation: blank out
+    opacity = 0;
+  } else if (!isInViewport) {
+    // Inactive scene + scrolled past: blank out
+    opacity = 0;
+  } else {
+    // Inactive scene + normal scrolling: dim
+    opacity = 0.3;
+  }
 
   return (
     <motion.div
@@ -93,7 +101,7 @@ export function SceneReveal({
       data-scene-index={sceneIndex}
       initial={{ opacity: 0, y: 20 }}
       animate={{
-        opacity: opacity, // Direct calculation - no function calls that could cause issues
+        opacity: opacity,
         y: 0,
       }}
       transition={{
@@ -103,6 +111,9 @@ export function SceneReveal({
       style={{
         willChange: isActive ? "opacity, transform" : "auto",
         pointerEvents: isActive ? "auto" : "none",
+        // Ensure element is always in DOM - never remove it
+        display: "block",
+        visibility: "visible",
       }}
     >
       {children}
