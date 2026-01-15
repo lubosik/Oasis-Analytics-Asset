@@ -16,11 +16,19 @@ export const SceneLayout = forwardRef<HTMLElement, SceneLayoutProps>(
     return (
       <section
         ref={ref}
+        data-scene-index={sceneIndex}
         className={`min-h-svh w-full flex flex-col ${className}`}
       >
         <div className="flex-1 flex items-center justify-center px-2 sm:px-4 py-8 sm:py-12 md:py-16">
           <div className="w-full max-w-7xl mx-auto">
-            <SceneReveal isActive={isActive} presenterMode={presenterMode}>{children}</SceneReveal>
+            <SceneReveal 
+              isActive={isActive} 
+              presenterMode={presenterMode}
+              sceneIndex={sceneIndex}
+              currentSceneIndex={currentSceneIndex}
+            >
+              {children}
+            </SceneReveal>
           </div>
         </div>
       </section>

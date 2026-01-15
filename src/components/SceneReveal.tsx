@@ -1,4 +1,4 @@
-import { type ReactNode } from "react";
+import { type ReactNode, useEffect, useState, useRef } from "react";
 import { motion } from "framer-motion";
 
 interface SceneRevealProps {
@@ -6,36 +6,96 @@ interface SceneRevealProps {
   isActive: boolean;
   className?: string;
   presenterMode?: boolean;
+  sceneIndex?: number;
+  currentSceneIndex?: number;
 }
 
 /**
  * SceneReveal wrapper that fades/slides content in when the scene becomes active.
- * Only blanks out scenes when in presenter mode (keyboard navigation).
- * When scrolling normally, scenes stay visible but dimmed.
+ * - Normal scrolling: dims inactive scenes (opacity 0.3), clear active scene (opacity 1)
+ * - Arrow key navigation: blanks out inactive scenes (opacity 0), clear active scene (opacity 1)
+ * - Scenes that are completely scrolled past can blank out
  */
 export function SceneReveal({
   children,
   isActive,
   className = "",
   presenterMode = false,
+  sceneIndex = 0,
+  currentSceneIndex = 0,
 }: SceneRevealProps) {
+  const [isInViewport, setIsInViewport] = useState(true);
+  const elementRef = useRef<HTMLDivElement>(null);
+
+  // Check if scene is in viewport (only for normal scrolling mode)
+  useEffect(() => {
+    if (presenterMode) {
+      // In presenter mode, don't check viewport - just use presenter mode logic
+      setIsInViewport(true);
+      return;
+    }
+
+    const checkViewport = () => {
+      if (elementRef.current) {
+        const rect = elementRef.current.getBoundingClientRect();
+        const viewportHeight = window.innerHeight;
+        // Scene is considered "scrolled past" if it's completely above or below viewport
+        // Add some buffer to prevent flickering
+        const buffer = 100;
+        const isPast = rect.bottom < -buffer || rect.top > viewportHeight + buffer;
+        setIsInViewport(!isPast);
+      }
+    };
+
+    // Initial check
+    checkViewport();
+    
+    // Check on scroll with debounce
+    let timeoutId: ReturnType<typeof setTimeout>;
+    const handleScroll = () => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(checkViewport, 50);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("resize", checkViewport);
+    
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", checkViewport);
+      clearTimeout(timeoutId);
+    };
+  }, [presenterMode, sceneIndex]);
+
+  // Determine opacity based on state
+  const getOpacity = () => {
+    if (isActive) {
+      return 1; // Active scene is always clear
+    }
+    
+    if (presenterMode) {
+      // In presenter mode (arrow keys), blank out inactive scenes
+      return 0;
+    }
+    
+    // Normal scrolling: dim inactive scenes, but blank out if completely scrolled past
+    if (!isInViewport) {
+      return 0; // Completely scrolled past - can blank out
+    }
+    
+    return 0.3; // Dim but visible (out of spotlight)
+  };
+
   return (
     <motion.div
+      ref={elementRef}
       className={className}
+      data-scene-index={sceneIndex}
       initial={{ opacity: 0, y: 20 }}
-      animate={
-        isActive
-          ? {
-              opacity: 1,
-              y: 0,
-            }
-          : {
-              // Only blank out (opacity 0) when in presenter mode (keyboard navigation)
-              // When scrolling normally, dim scenes (opacity 0.3) so they don't suddenly disappear
-              opacity: presenterMode ? 0 : 0.3,
-              y: 0, // Don't move when inactive to prevent layout shifts
-            }
-      }
+      animate={{
+        opacity: getOpacity(),
+        y: 0,
+      }}
       transition={{
         duration: 0.4,
         ease: [0.22, 1, 0.36, 1], // Custom easing for premium feel
