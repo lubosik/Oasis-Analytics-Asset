@@ -130,17 +130,21 @@ export function Scene9() {
           <Card className="p-5 sm:p-6 md:p-8 bg-gradient-to-br from-gray-900 to-gray-800 text-white border-2 border-gray-700">
             <div className="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4">
               <Zap className="h-5 w-5 sm:h-6 sm:w-6 text-yellow-400 flex-shrink-0" />
-              <h3 className="text-base sm:text-lg md:text-xl font-semibold">Hours Saved</h3>
+              <h3 className="text-base sm:text-lg md:text-xl font-semibold">Time Saved</h3>
             </div>
-            <div className="text-3xl sm:text-4xl md:text-5xl font-bold mb-1 sm:mb-2 break-words">
+            <div className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 sm:mb-3 break-words">
               <AnimatedCounter
                 targetNumber={TIME_SAVINGS.hoursSaved}
                 displayString={TIME_SAVINGS.displayHoursSaved}
                 duration={1.2}
               />
+              <span className="text-lg sm:text-xl md:text-2xl"> hours</span>
+            </div>
+            <div className="text-xl sm:text-2xl md:text-3xl font-bold mb-1 sm:mb-2">
+              ≈ {TIME_SAVINGS.displayMonthsSaved} months
             </div>
             <p className="text-xs sm:text-sm md:text-base text-gray-300">
-              Estimated time saved vs human team
+              of human work that didn't have to be done
             </p>
           </Card>
 

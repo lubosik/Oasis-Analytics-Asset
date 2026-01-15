@@ -40,11 +40,17 @@ export function IllustrativeCalculator() {
       <div className="space-y-4 sm:space-y-6">
         {/* Toggle */}
         <div className="flex items-center justify-between">
-          <div>
+          <div className="flex-1">
             <Label htmlFor="calculator-toggle" className="text-sm sm:text-base font-semibold text-gray-900">
               Illustrative calculator
             </Label>
-            <p className="text-xs sm:text-sm text-gray-600 mt-1">
+            <p className="text-xs sm:text-sm text-gray-600 mt-1 mb-2">
+              <strong>What it is:</strong> This calculator shows what this call volume could replace in human time, under adjustable assumptions. It converts call attempts into hours, months, and estimated labor costs.
+            </p>
+            <p className="text-xs sm:text-sm text-gray-600 mb-1">
+              <strong>How to use:</strong> Toggle ON to see estimates. Adjust the "minutes per call" and "salary benchmark" to match your assumptions. Results update automatically.
+            </p>
+            <p className="text-xs sm:text-sm text-gray-500 italic">
               OFF by default. Shows estimates only, not guarantees.
             </p>
           </div>

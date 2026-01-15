@@ -37,7 +37,7 @@ export function Scene2() {
         <div className="relative h-20 sm:h-24 md:h-32 rounded-lg overflow-hidden border-2 border-gray-200 bg-gray-50">
           {/* Picked up section */}
           <div
-            className="absolute left-0 top-0 h-full bg-gray-700 flex items-center justify-center transition-all duration-1000"
+            className="absolute left-0 top-0 h-full bg-green-600 flex items-center justify-center transition-all duration-1000"
             style={{ width: `${pickedUpPercent}%` }}
           >
             <div className="text-center px-2 sm:px-4">

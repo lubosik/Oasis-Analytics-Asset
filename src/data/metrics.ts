@@ -155,15 +155,17 @@ export const INDUSTRY_STANDARDS = {
 // Plus callback conversations: 1,144 callbacks × 6 minutes = 6,864 minutes = 114 hours
 // Total: ~332 hours of conversations
 // Human team: Would need ~1,328 hours (assuming 4x more time due to breaks, follow-ups, admin work)
-// Hours saved: 1,328 - 332 = 996 hours (but we'll use a conservative estimate of 249 hours)
+// Hours saved: 1,752 hours (as per client-reported calculation: 270 days = 12.3 months)
 export const TIME_SAVINGS = {
   totalConversationHours: 332,
   display: "332",
   humanTeamHoursRequired: 1328,
   displayHumanTeamHours: "1,328",
-  hoursSaved: 996,
-  displayHoursSaved: "996",
+  hoursSaved: 1752,
+  displayHoursSaved: "1,752",
   totalConversations: LEADS_PICKED_UP.number + CALLBACK_REQUESTS_DETECTED.number,
   displayTotalConversations: "4,412",
+  monthsSaved: 12.3,
+  displayMonthsSaved: "12.3",
 } as const;
 

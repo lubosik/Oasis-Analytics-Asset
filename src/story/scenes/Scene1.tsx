@@ -1,10 +1,14 @@
 import { AnimatedCounter } from "@/components/AnimatedCounter";
 import { Card } from "@/components/ui/card";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { TOTAL_CALLS_MADE, UNIQUE_CUSTOMERS, METRICS_META } from "@/data/metrics";
 import { AboutOasis } from "@/components/AboutOasis";
+import { useStoryContext } from "@/contexts/StoryContext";
 import { motion } from "framer-motion";
 
 export function Scene1() {
+  const { viewMode } = useStoryContext();
+
   return (
     <div className="w-full">
       {/* Headline */}
@@ -12,11 +16,6 @@ export function Scene1() {
         <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-gray-900 mb-3 sm:mb-4 leading-tight">
           Leads → real conversations → real buyers.
         </h1>
-      </div>
-
-      {/* About Oasis module */}
-      <div className="mb-8 sm:mb-12">
-        <AboutOasis />
       </div>
 
       {/* Two huge metric cards */}
@@ -99,6 +98,22 @@ export function Scene1() {
           {METRICS_META.dataSpan} of data. Dataset shown here is predominantly re-engaged archived leads (12+ months old).
         </p>
       </div>
+
+      {/* About Oasis module - Only in private view, as dropdown after numbers */}
+      {viewMode === "private" && (
+        <div className="mt-8 sm:mt-12 max-w-4xl mx-auto px-2">
+          <Accordion type="single" collapsible className="w-full">
+            <AccordionItem value="about-oasis" className="border-2 border-gray-200 rounded-lg px-2 sm:px-3 md:px-4">
+              <AccordionTrigger className="text-sm sm:text-base md:text-lg font-semibold text-gray-900 hover:no-underline py-3 sm:py-4">
+                About Oasis (Client)
+              </AccordionTrigger>
+              <AccordionContent className="pt-3 sm:pt-4 pb-4 sm:pb-6">
+                <AboutOasis />
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
+        </div>
+      )}
     </div>
   );
 }

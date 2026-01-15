@@ -27,7 +27,7 @@ export function SceneReveal({
               y: 0,
             }
           : {
-              opacity: 0.3, // Keep visible but dimmed instead of completely hidden
+              opacity: 0, // Blank out previous scenes when navigating
               y: 0, // Don't move when inactive to prevent layout shifts
             }
       }
