@@ -29,21 +29,35 @@ export function SceneReveal({
   const [isInViewport, setIsInViewport] = useState(true);
   const elementRef = useRef<HTMLDivElement>(null);
 
-  // Check if scene is in viewport (only for normal scrolling mode)
+  // CRITICAL: Always ensure active scenes are considered in viewport
+  // This must run separately and immediately when isActive changes
   useEffect(() => {
-    // If scene is active, always consider it in viewport
+    if (isActive) {
+      setIsInViewport(true);
+    }
+  }, [isActive]);
+
+  // Check if scene is in viewport (only for normal scrolling mode, only for inactive scenes)
+  useEffect(() => {
+    // If scene is active, always consider it in viewport - skip all checks
     if (isActive) {
       setIsInViewport(true);
       return;
     }
 
+    // Skip viewport check in presenter mode - handled by wasNavigatedByKeyboard
     if (presenterMode) {
-      // In presenter mode, don't check viewport - just use presenter mode logic
       setIsInViewport(true);
       return;
     }
 
     const checkViewport = () => {
+      // Don't check viewport for active scenes
+      if (isActive) {
+        setIsInViewport(true);
+        return;
+      }
+
       if (elementRef.current) {
         const rect = elementRef.current.getBoundingClientRect();
         const viewportHeight = window.innerHeight;
@@ -56,13 +70,13 @@ export function SceneReveal({
     };
 
     // Initial check with delay to allow scroll animation to complete
-    const initialTimeout = setTimeout(checkViewport, 100);
+    const initialTimeout = setTimeout(checkViewport, 200);
     
     // Check on scroll with debounce
     let timeoutId: ReturnType<typeof setTimeout>;
     const handleScroll = () => {
       clearTimeout(timeoutId);
-      timeoutId = setTimeout(checkViewport, 50);
+      timeoutId = setTimeout(checkViewport, 100);
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
@@ -77,21 +91,22 @@ export function SceneReveal({
   }, [presenterMode, sceneIndex, isActive]);
 
   // Determine opacity based on state
-  const getOpacity = () => {
-    // Active scene is ALWAYS clear - this takes absolute priority
-    // This ensures scenes don't blank out when you navigate to them
+  // CRITICAL: Active scenes MUST always return 1, no exceptions, no conditions
+  const getOpacity = (): number => {
+    // ABSOLUTE PRIORITY #1: Active scene is ALWAYS visible at full opacity
+    // This check happens FIRST and returns immediately - no other logic can override this
     if (isActive) {
       return 1;
     }
     
-    // If navigated by keyboard (arrow keys) AND scene is not active, blank out inactive scenes
-    // This only applies to scenes that are NOT the current active scene
+    // Only process inactive scenes below this point - active scenes never reach here
+    
+    // If navigated by keyboard (arrow keys), blank out inactive scenes
     if (wasNavigatedByKeyboard && presenterMode) {
       return 0; // Blank out when using arrow keys (only inactive scenes)
     }
     
     // Normal scrolling: dim inactive scenes, but blank out if completely scrolled past
-    // Only check viewport for inactive scenes
     if (!isInViewport) {
       return 0; // Completely scrolled past - can blank out
     }
@@ -106,7 +121,7 @@ export function SceneReveal({
       data-scene-index={sceneIndex}
       initial={{ opacity: 0, y: 20 }}
       animate={{
-        opacity: getOpacity(),
+        opacity: isActive ? 1 : getOpacity(), // Force active scenes to 1, bypass getOpacity for them
         y: 0,
       }}
       transition={{
