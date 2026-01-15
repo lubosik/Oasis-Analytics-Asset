@@ -31,6 +31,12 @@ export function SceneReveal({
 
   // Check if scene is in viewport (only for normal scrolling mode)
   useEffect(() => {
+    // If scene is active, always consider it in viewport
+    if (isActive) {
+      setIsInViewport(true);
+      return;
+    }
+
     if (presenterMode) {
       // In presenter mode, don't check viewport - just use presenter mode logic
       setIsInViewport(true);
@@ -49,8 +55,8 @@ export function SceneReveal({
       }
     };
 
-    // Initial check
-    checkViewport();
+    // Initial check with delay to allow scroll animation to complete
+    const initialTimeout = setTimeout(checkViewport, 100);
     
     // Check on scroll with debounce
     let timeoutId: ReturnType<typeof setTimeout>;
@@ -63,24 +69,29 @@ export function SceneReveal({
     window.addEventListener("resize", checkViewport);
     
     return () => {
+      clearTimeout(initialTimeout);
       window.removeEventListener("scroll", handleScroll);
       window.removeEventListener("resize", checkViewport);
       clearTimeout(timeoutId);
     };
-  }, [presenterMode, sceneIndex]);
+  }, [presenterMode, sceneIndex, isActive]);
 
   // Determine opacity based on state
   const getOpacity = () => {
+    // Active scene is ALWAYS clear - this takes absolute priority
+    // This ensures scenes don't blank out when you navigate to them
     if (isActive) {
-      return 1; // Active scene is always clear
+      return 1;
     }
     
-    // If navigated by keyboard (arrow keys), blank out inactive scenes
+    // If navigated by keyboard (arrow keys) AND scene is not active, blank out inactive scenes
+    // This only applies to scenes that are NOT the current active scene
     if (wasNavigatedByKeyboard && presenterMode) {
-      return 0; // Blank out when using arrow keys
+      return 0; // Blank out when using arrow keys (only inactive scenes)
     }
     
     // Normal scrolling: dim inactive scenes, but blank out if completely scrolled past
+    // Only check viewport for inactive scenes
     if (!isInViewport) {
       return 0; // Completely scrolled past - can blank out
     }
