@@ -42,7 +42,7 @@ export function AboutOasis() {
           {viewMode === "private" && (
             <div className="pt-3 sm:pt-4 border-t border-gray-200">
               <p className="text-xs sm:text-sm text-gray-600 mb-2">
-                <strong className="text-gray-900">Client-reported deal range:</strong> $80,000 - $2,500,000
+                <strong className="text-gray-900">Client-reported deal range:</strong> $8,000 - $2,500,000
               </p>
               <p className="text-xs sm:text-sm text-gray-500 italic">
                 High-ticket buyer context: [CLIENT-PROVIDED RANGE / DESCRIPTION]
