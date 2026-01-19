@@ -78,7 +78,7 @@ export function Scene5() {
       {/* Callout strip */}
       <div className="mb-6 sm:mb-8 px-2 max-w-4xl mx-auto">
         <CalloutStrip>
-          <strong>What is a callback?</strong> When someone can't talk right now, they ask to be called back later. Sal remembers the request, calls back at the exact time they specified (even if it's 9pm or a different time zone), and keeps calling back until it confirms their interest. Most callbacks are handled automatically. Requests for a human are flagged. We don't leave it to you after one try. We keep following up until we know if the lead is an interested buyer. Example: "Can you call me tomorrow at 3pm?" Sal calls exactly at 3pm tomorrow.
+          <strong>What is a callback?</strong> When someone can't talk right now, they ask to be called back later. SAO remembers the request, calls back at the exact time they specified (even if it's 9pm or a different time zone), and keeps calling back until it confirms their interest. Most callbacks are handled automatically. Requests for a human are flagged. We don't leave it to you after one try. We keep following up until we know if the lead is an interested buyer. Example: "Can you call me tomorrow at 3pm?" SAO calls exactly at 3pm tomorrow.
         </CalloutStrip>
       </div>
       
@@ -181,7 +181,7 @@ export function Scene5() {
         <Card className="p-4 sm:p-5 bg-gradient-to-br from-gray-50 to-white border-2 border-gray-200">
           <div className="text-center">
             <p className="text-xs sm:text-sm md:text-base text-gray-700 italic">
-              Examples include callbacks scheduled 30 minutes later or weeks later. Sal remembers and calls exactly when requested, even if it's weeks away.
+              Examples include callbacks scheduled 30 minutes later or weeks later. SAO remembers and calls exactly when requested, even if it's weeks away.
             </p>
           </div>
         </Card>

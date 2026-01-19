@@ -32,10 +32,10 @@ export function AboutOasis() {
               </Badge>
             </div>
             <p className="text-sm sm:text-base text-gray-700 mb-2">
-              <strong className="text-gray-900">Oasis Estate Agents</strong> is a real estate company based in Staines-upon-Thames, UK. This case study shows results from implementing Sal, Velto's always-on follow-up autopilot, for their sales team.
+              <strong className="text-gray-900">Oasis Estate Agents</strong> is a real estate company based in Staines-upon-Thames, UK. This case study shows results from implementing SAO, Velto's always-on follow-up autopilot, for their sales team.
             </p>
             <p className="text-sm sm:text-base text-gray-700">
-              <strong className="text-gray-900">Velto</strong> is the tech company that built Sal. Sal helps sales teams with high-intent buyer conversations and works for fresh inbound and older leads.
+              <strong className="text-gray-900">Velto</strong> is the tech company that built SAO. SAO helps sales teams with high-intent buyer conversations and works for fresh inbound and older leads.
             </p>
           </div>
 
