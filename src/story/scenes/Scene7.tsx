@@ -16,14 +16,14 @@ export function Scene7() {
       {/* Headline */}
       <div className="text-center mb-6 sm:mb-8 md:mb-12 lg:mb-16 px-2">
         <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-gray-900 mb-4 sm:mb-6 leading-tight">
-          The system is intelligent. It doesn't give up after one try.
+          Sal doesn't give up after one try.
         </h1>
       </div>
 
       {/* Intelligent retry explanation */}
       <div className="mb-6 sm:mb-8 px-2 max-w-4xl mx-auto">
         <CalloutStrip>
-          <strong>How it works:</strong> When the AI called and they didn't pick up, we didn't just put the phone down. The system intelligently retried them up to 6 times at different times and days. We don't leave it to you after one try. We keep retrying until we know if the lead is an interested buyer. This persistence created extra answers that wouldn't have happened with a single call attempt.
+          <strong>How it works:</strong> When Sal called and they didn't pick up, we didn't just put the phone down. Sal retried them up to 6 times at different times and days. We don't leave it to you after one try. We keep retrying until we know if the lead is an interested buyer. This persistence created extra answers that wouldn't have happened with a single call attempt.
         </CalloutStrip>
       </div>
 

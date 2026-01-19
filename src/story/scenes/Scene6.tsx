@@ -49,7 +49,7 @@ export function Scene6() {
               />
             </div>
             <p className="text-xs sm:text-sm md:text-base text-gray-400">
-              Includes buyers, researchers, and browsers from callbacks.
+              Buyer tiers were defined by the client; breakdown withheld.
             </p>
           </div>
         </Card>

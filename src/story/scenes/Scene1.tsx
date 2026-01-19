@@ -92,7 +92,7 @@ export function Scene1() {
       {/* Support line and credibility */}
       <div className="text-center mt-6 sm:mt-8 md:mt-12 space-y-1 sm:space-y-2 px-2">
         <p className="text-base sm:text-lg md:text-xl text-gray-700">
-          This case study shows reactivation of older leads. The system works for fresh inbound and older leads.
+          This case study shows reactivation of older leads. Sal works for fresh inbound and older leads.
         </p>
         <p className="text-xs sm:text-sm md:text-base text-gray-500">
           {METRICS_META.dataSpan} of data. Dataset shown here is predominantly re-engaged archived leads (12+ months old).

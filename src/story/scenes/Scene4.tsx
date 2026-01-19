@@ -92,13 +92,13 @@ export function Scene4() {
               Potential Deal Value
             </div>
             <div className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-1 sm:mb-2 break-words">
-              $6.4M - $2.0B
+              $68.3M - $2.0B
             </div>
             <div className="text-sm sm:text-base md:text-lg text-gray-700 mb-2 sm:mb-3">
               Based on {BANT_VERIFIED.display} verified buyers
             </div>
             <div className="text-xs sm:text-sm text-gray-600">
-              Client-reported deal range: $8,000 - $2,500,000 per buyer
+              Client-reported deal range: $85,000 - $2,500,000 per buyer
             </div>
           </div>
         </Card>

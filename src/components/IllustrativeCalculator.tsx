@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/select";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Info } from "lucide-react";
-import { TOTAL_CALLS_MADE } from "@/data/metrics";
+import { TOTAL_CALLS_MADE, DIDNT_PICK_UP } from "@/data/metrics";
 
 /**
  * Illustrative calculator for time savings and labor cost estimates.
@@ -20,17 +20,26 @@ import { TOTAL_CALLS_MADE } from "@/data/metrics";
  */
 export function IllustrativeCalculator() {
   const [enabled, setEnabled] = useState(false);
+  const [useDidntPickUp, setUseDidntPickUp] = useState(true); // Default to DIDNT_PICK_UP as primary driver
   const [minutesPerCall, setMinutesPerCall] = useState(4);
-  const [salaryBenchmark, setSalaryBenchmark] = useState<"careerOneStop" | "indeed">("careerOneStop");
+  const [salaryBenchmark, setSalaryBenchmark] = useState<"careerOneStop" | "indeed" | "custom">("careerOneStop");
+  const [customHourlyRate, setCustomHourlyRate] = useState(25);
 
   // Default assumptions
   const careerOneStopHourly = 25.50; // US DOL CareerOneStop sales rep average
   const indeedHourly = 28.75; // Indeed-reported inside sales rep average base
 
-  const hourlyRate = salaryBenchmark === "careerOneStop" ? careerOneStopHourly : indeedHourly;
+  const hourlyRate = salaryBenchmark === "careerOneStop" 
+    ? careerOneStopHourly 
+    : salaryBenchmark === "indeed" 
+    ? indeedHourly 
+    : customHourlyRate;
 
+  // Use DIDNT_PICK_UP (18,901) as primary driver, or TOTAL_CALLS_MADE as alternative
+  const callVolume = useDidntPickUp ? DIDNT_PICK_UP.number : TOTAL_CALLS_MADE.number;
+  
   // Calculations
-  const totalMinutes = TOTAL_CALLS_MADE.number * minutesPerCall;
+  const totalMinutes = callVolume * minutesPerCall;
   const totalHours = Math.round(totalMinutes / 60);
   const totalMonths = Math.round((totalHours / 160) * 10) / 10; // 160 hours per month
   const laborCost = Math.round(totalHours * hourlyRate);
@@ -67,6 +76,28 @@ export function IllustrativeCalculator() {
             {/* Assumptions */}
             <div className="space-y-3">
               <div>
+                <Label htmlFor="call-volume" className="text-xs sm:text-sm font-medium text-gray-700">
+                  Call volume basis
+                </Label>
+                <Select value={useDidntPickUp ? "didntPickUp" : "totalCalls"} onValueChange={(v) => setUseDidntPickUp(v === "didntPickUp")}>
+                  <SelectTrigger id="call-volume" className="mt-1 max-w-xs">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="didntPickUp">
+                      Didn't Pick Up / Voicemail ({DIDNT_PICK_UP.display})
+                    </SelectItem>
+                    <SelectItem value="totalCalls">
+                      Total Calls Made ({TOTAL_CALLS_MADE.display})
+                    </SelectItem>
+                  </SelectContent>
+                </Select>
+                <p className="text-xs text-gray-500 mt-1">
+                  Focus on no-answer attempts (primary driver) or all calls
+                </p>
+              </div>
+
+              <div>
                 <Label htmlFor="minutes-per-call" className="text-xs sm:text-sm font-medium text-gray-700">
                   Minutes of manual handling per call attempt
                 </Label>
@@ -85,19 +116,37 @@ export function IllustrativeCalculator() {
                 <Label htmlFor="salary-benchmark" className="text-xs sm:text-sm font-medium text-gray-700">
                   Salary benchmark source
                 </Label>
-                <Select value={salaryBenchmark} onValueChange={(v: "careerOneStop" | "indeed") => setSalaryBenchmark(v)}>
+                <Select value={salaryBenchmark} onValueChange={(v: "careerOneStop" | "indeed" | "custom") => setSalaryBenchmark(v)}>
                   <SelectTrigger id="salary-benchmark" className="mt-1 max-w-xs">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="careerOneStop">
-                      CareerOneStop (US DOL) - Sales Rep
+                      CareerOneStop-based benchmark (example): ${careerOneStopHourly.toFixed(2)}/hr
                     </SelectItem>
                     <SelectItem value="indeed">
-                      Indeed - Inside Sales Rep Average
+                      Alternative benchmark (example): ${indeedHourly.toFixed(2)}/hr
+                    </SelectItem>
+                    <SelectItem value="custom">
+                      Custom hourly rate
                     </SelectItem>
                   </SelectContent>
                 </Select>
+                {salaryBenchmark === "custom" && (
+                  <div className="mt-2">
+                    <Label htmlFor="custom-hourly" className="text-xs sm:text-sm font-medium text-gray-700">
+                      Custom hourly rate ($)
+                    </Label>
+                    <Input
+                      id="custom-hourly"
+                      type="number"
+                      min="1"
+                      value={customHourlyRate}
+                      onChange={(e) => setCustomHourlyRate(Math.max(1, parseFloat(e.target.value) || 25))}
+                      className="mt-1 max-w-32"
+                    />
+                  </div>
+                )}
               </div>
             </div>
 
@@ -121,8 +170,11 @@ export function IllustrativeCalculator() {
                     ${laborCost.toLocaleString()}
                   </div>
                   <div className="text-xs sm:text-sm text-gray-600">
-                    Estimated labor cost at ${hourlyRate.toFixed(2)}/hour
+                    Illustrative labor cost equivalent at ${hourlyRate.toFixed(2)}/hour
                   </div>
+                  <p className="text-[10px] sm:text-xs text-gray-500 mt-1 italic">
+                    Based on {callVolume.toLocaleString()} calls × {minutesPerCall} min/call
+                  </p>
                 </div>
               </div>
             </div>

@@ -70,7 +70,7 @@ export function Scene5() {
             transition={{ duration: 0.5, delay: 1 }}
             className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-600 text-center sm:text-left"
           >
-            Callback requests
+            Callbacks scheduled/requested
           </motion.div>
         </div>
       </div>
@@ -78,7 +78,14 @@ export function Scene5() {
       {/* Callout strip */}
       <div className="mb-6 sm:mb-8 px-2 max-w-4xl mx-auto">
         <CalloutStrip>
-          <strong>What is a callback?</strong> When someone can't talk right now, they ask to be called back later. The system is intelligent. It doesn't just hang up. It remembers the request, calls back at the exact time they specified (even if it's 9pm or a different time zone), and keeps calling back until it confirms their interest. We don't leave it to you after one try. We keep following up until we know if the lead is an interested buyer. Example: "Can you call me tomorrow at 3pm?" System calls exactly at 3pm tomorrow.
+          <strong>What is a callback?</strong> When someone can't talk right now, they ask to be called back later. Sal remembers the request, calls back at the exact time they specified (even if it's 9pm or a different time zone), and keeps calling back until it confirms their interest. Most callbacks are handled automatically. Requests for a human are flagged. We don't leave it to you after one try. We keep following up until we know if the lead is an interested buyer. Example: "Can you call me tomorrow at 3pm?" Sal calls exactly at 3pm tomorrow.
+        </CalloutStrip>
+      </div>
+      
+      {/* Callback clarity note */}
+      <div className="mb-4 sm:mb-6 px-2 max-w-4xl mx-auto">
+        <CalloutStrip>
+          <strong>Note:</strong> Most callbacks are handled automatically. Requests for a human are flagged for your team.
         </CalloutStrip>
       </div>
 
@@ -103,7 +110,7 @@ export function Scene5() {
                 Buyers identified (client-defined tiers)
               </div>
               <div className="text-xs sm:text-sm text-gray-400">
-                Includes buyers, researchers, and browsers from callbacks.
+                Buyer tiers were defined by the client; breakdown withheld.
               </div>
             </div>
           </Card>
@@ -167,6 +174,17 @@ export function Scene5() {
         <p className="text-[10px] sm:text-xs md:text-sm text-gray-500">
           Industry average callback conversion: {INDUSTRY_STANDARDS.averageCallbackConversion} • {INTERESTED_FROM_CALLBACKS.percent} is 2-3x better
         </p>
+      </div>
+
+      {/* Callback timing proof point */}
+      <div className="max-w-4xl mx-auto mb-6 sm:mb-8 px-2">
+        <Card className="p-4 sm:p-5 bg-gradient-to-br from-gray-50 to-white border-2 border-gray-200">
+          <div className="text-center">
+            <p className="text-xs sm:text-sm md:text-base text-gray-700 italic">
+              Examples include callbacks scheduled 30 minutes later or weeks later. Sal remembers and calls exactly when requested, even if it's weeks away.
+            </p>
+          </div>
+        </Card>
       </div>
 
       {/* Detailed breakdown - always available but collapsed */}

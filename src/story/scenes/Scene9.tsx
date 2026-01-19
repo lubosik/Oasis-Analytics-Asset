@@ -1,5 +1,6 @@
 import { AnimatedCounter } from "@/components/AnimatedCounter";
 import { Card } from "@/components/ui/card";
+import { CalloutStrip } from "@/components/CalloutStrip";
 import { IllustrativeCalculator } from "@/components/IllustrativeCalculator";
 import {
   BANT_VERIFIED,
@@ -47,10 +48,10 @@ export function Scene9() {
     },
     {
       icon: Phone,
-      title: "Callback requested",
+      title: "Callbacks scheduled/requested",
       count: CALLBACK_REQUESTS_DETECTED.number,
       display: CALLBACK_REQUESTS_DETECTED.display,
-      label: "Call at requested time",
+      label: "Most handled automatically; requests for a human are flagged",
       color: "text-gray-800",
       bgColor: "bg-gray-50",
       borderColor: "border-gray-200",
@@ -124,6 +125,13 @@ export function Scene9() {
             </motion.div>
           );
         })}
+      </div>
+
+      {/* Callback clarity callout */}
+      <div className="max-w-4xl mx-auto mt-4 sm:mt-6 px-2">
+        <CalloutStrip>
+          <strong>Note:</strong> Most callbacks are handled automatically. Requests for a human are flagged for your team.
+        </CalloutStrip>
       </div>
 
       {/* Time Savings Section */}

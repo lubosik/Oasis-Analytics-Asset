@@ -32,17 +32,17 @@ export function AboutOasis() {
               </Badge>
             </div>
             <p className="text-sm sm:text-base text-gray-700 mb-2">
-              <strong className="text-gray-900">Oasis Estate Agents</strong> is a real estate company based in Staines-upon-Thames, UK. This case study shows results from implementing Velto's AI system for their sales team.
+              <strong className="text-gray-900">Oasis Estate Agents</strong> is a real estate company based in Staines-upon-Thames, UK. This case study shows results from implementing Sal, Velto's always-on follow-up autopilot, for their sales team.
             </p>
             <p className="text-sm sm:text-base text-gray-700">
-              <strong className="text-gray-900">Velto</strong> is the tech company that implemented this AI system. The system helps sales teams with high-intent buyer conversations and works for fresh inbound and older leads.
+              <strong className="text-gray-900">Velto</strong> is the tech company that built Sal. Sal helps sales teams with high-intent buyer conversations and works for fresh inbound and older leads.
             </p>
           </div>
 
           {viewMode === "private" && (
             <div className="pt-3 sm:pt-4 border-t border-gray-200">
               <p className="text-xs sm:text-sm text-gray-600 mb-2">
-                <strong className="text-gray-900">Client-reported deal range:</strong> $8,000 - $2,500,000
+                <strong className="text-gray-900">Client-reported deal range:</strong> $85,000 - $2,500,000
               </p>
               <p className="text-xs sm:text-sm text-gray-500 italic">
                 High-ticket buyer context: [CLIENT-PROVIDED RANGE / DESCRIPTION]
