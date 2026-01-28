@@ -84,22 +84,19 @@ export function Scene4() {
         </CalloutStrip>
       </div>
 
-      {/* Potential Deal Value */}
+      {/* Deal value (no figures – illustrative) */}
       <div className="mt-8 sm:mt-10 md:mt-12 lg:mt-16 px-2 max-w-4xl mx-auto">
         <Card className="p-5 sm:p-6 md:p-8 bg-gradient-to-br from-green-50 via-white to-green-50 border-2 border-green-200 shadow-lg">
           <div className="text-center">
             <div className="text-xs sm:text-sm md:text-base text-gray-600 mb-2 sm:mb-3 uppercase tracking-wide">
               Potential Deal Value
             </div>
-            <div className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-1 sm:mb-2 break-words">
-              $68.3M - $2.0B
+            <div className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900">
+              Over a million in deal value
             </div>
-            <div className="text-sm sm:text-base md:text-lg text-gray-700 mb-2 sm:mb-3">
-              Based on {BANT_VERIFIED.display} verified buyers
-            </div>
-            <div className="text-xs sm:text-sm text-gray-600">
-              Client-reported deal range: $85,000 - $2,500,000 per buyer
-            </div>
+            <p className="text-sm sm:text-base text-gray-600 mt-2">
+              Verified buyers from this period represented significant pipeline value; exact figures are not disclosed.
+            </p>
           </div>
         </Card>
       </div>
